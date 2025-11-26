@@ -96,7 +96,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ALT",
+                    "name": "Shield",
                     "type": "Button",
                     "id": "b583e229-c293-49d8-b292-8a4e0158d693",
                     "expectedControlType": "",
@@ -329,11 +329,11 @@
                 {
                     "name": "",
                     "id": "6425ffac-9ee2-49d7-a0ed-0208b91e3381",
-                    "path": "",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ALT",
+                    "action": "Shield",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

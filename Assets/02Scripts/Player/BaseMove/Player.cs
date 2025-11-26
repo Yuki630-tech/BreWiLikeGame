@@ -2,6 +2,7 @@ using Ikeda;
 using UnityEngine;
 using UniRx;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class Player : MonoBehaviour
     [Tooltip("移動ベクトル作成用のコンポーネント"), SerializeField] private MoveVectorMaker moveVectorMaker = new MoveVectorMaker();
     [Tooltip("ジャンプ力"), SerializeField] private float jumpPower;
     private CharConMove normalMoveCharConMove; //CharacterControllerを使って通常移動するためのクラス
+
+    [Header("Strafeに関する設定")]
+    [Tooltip("Strafe時の移動ベクトル作成クラス"), SerializeField] private MoveVectorMaker strafeMoveVectorMaker = new MoveVectorMaker();
+    [Tooltip("ロックオン対象となる敵を検知するコンポーネント"), SerializeField] private EnemyDetecter enemyDetecter;
 
     [Header("攻撃ステートに関する設定")]
     [Tooltip("攻撃可能になるゲームフラグの値"), SerializeField] private int canAttackFlag = 1;
@@ -31,6 +36,8 @@ public class Player : MonoBehaviour
     [Tooltip("接地判定コンポーネント"), SerializeField] private GroundChecker groundChecker;
 
     [Header("移動できる状態かどうか"), SerializeField] private bool isMovable;
+
+    public bool IsCanChangeState = true;
 
     //[Tooltip("攻撃中のWallChecker"), SerializeField] private WallChecker wallChecker;
 
@@ -58,12 +65,14 @@ public class Player : MonoBehaviour
     //public WallChecker WallChecker { get => wallChecker; }
     //public PlayerAnimator PlayerAnimator { get => playerAnimator; }
     public int CanAttackFlag { get => canAttackFlag; }
+    public MoveVectorMaker StrafeMoveVectorMaker { get => strafeMoveVectorMaker; }
+    public EnemyDetecter EnemyDetecter { get => enemyDetecter;}
     #endregion
     public enum PlayerState
     {
         Normal,
         Attack,
-        WaitingForRoulette,
+        Strafe,
         Die
     }
 
@@ -77,6 +86,7 @@ public class Player : MonoBehaviour
         normalMoveCharConMove = new CharConMove(characterController, moveVectorMaker, verticalMoveMaker, groundChecker, jumpPower);
         stateMachine.AddState(PlayerState.Normal, new MoveState());
         stateMachine.AddState(PlayerState.Attack, AttackState = new AttackState());
+        stateMachine.AddState(PlayerState.Strafe, new StrafeState());
         stateMachine.AddState(PlayerState.Die, new DieState());
 
         //移動ステートに変更

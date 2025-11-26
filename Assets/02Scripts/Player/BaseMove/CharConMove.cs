@@ -9,6 +9,7 @@ public class CharConMove
     private GroundChecker groundChecker;
     private Vector3 verticalVector;
     private float jumpPower;
+    private Vector3 move;
 
     public CharConMove(CharacterController setCharacterController, MoveVectorMaker setMoveVectorMaker,  VerticalMoveMaker setVerticalMoveMaker, GroundChecker setGroundChecker, float setJumpPower)
     {
@@ -23,6 +24,13 @@ public class CharConMove
 
     public void Update(float deltaTime)
     {
+        MakeVector(deltaTime);
+
+        characterController.Move(move * deltaTime);
+    }
+
+    private void MakeVector(float deltaTime)
+    {
         if (verticalMoveMaker.VerticalSpeed <= 0f)
         {
             isGround = groundChecker.IsGround;
@@ -36,7 +44,7 @@ public class CharConMove
         moveVectorMaker.MakeMoveVector();
         verticalMoveMaker.Update(deltaTime);
         verticalVector = verticalMoveMaker.FallVector;
-        Vector3 move = moveVectorMaker.MoveVector + verticalVector;
+        move = moveVectorMaker.MoveVector + verticalVector;
         if (InputManager.Instance.IsJumpInput && isGround)
         {
             verticalMoveMaker.Jump(jumpPower);
@@ -51,7 +59,5 @@ public class CharConMove
         {
             move = Vector3.ProjectOnPlane(move, groundChecker.Normal);
         }
-
-        characterController.Move(move * deltaTime);
     }
 }

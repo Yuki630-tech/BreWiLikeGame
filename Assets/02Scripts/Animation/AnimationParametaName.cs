@@ -16,5 +16,7 @@ public static class AnimationParametaName
     public static string Die { get; private set; } = "Die";
 
     public static string HasShield { get; private set; } = "HasShield";
-    public static string ShieldMove { get; private set; } = "ShieldMove";
+    public static string ShieldMoveX { get; private set; } = "ShieldMoveX";
+    public static string ShieldMoveZ { get; private set; } = "ShieldMoveZ";
+    public static string Jump { get; private set; } = "Jump";
 }

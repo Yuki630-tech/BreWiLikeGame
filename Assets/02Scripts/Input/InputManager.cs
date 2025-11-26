@@ -29,9 +29,9 @@ public class InputManager : Singleton<InputManager>
     public bool IsRightInput { get; private set; }
     public bool IsLeftInput {  get; private set; }
 
-    public bool IsAltPushing { get; private set; }
-
-    public bool IsAltReleased { get; private set; }
+    public bool IsShieldPushing { get; private set; }
+    public bool IsSheildInput { get; private set; }
+    public bool IsSheildReleased { get; private set; }
     public ReactiveProperty<bool> IsDecided { get; internal set; } = new ReactiveProperty<bool>();
     public ReactiveProperty<bool> IsGoToNextSerif { get; internal set; } = new ReactiveProperty<bool>();
 
@@ -51,8 +51,9 @@ public class InputManager : Singleton<InputManager>
         IsFPushing.Value = fieldPlayerInput.currentActionMap[InputMapName.F].IsPressed();
         IsFReleased.Value = fieldPlayerInput.currentActionMap[InputMapName.F].WasReleasedThisFrame();
 
-        IsAltPushing = fieldPlayerInput.currentActionMap[InputMapName.Alt].IsPressed();
-        IsAltReleased = fieldPlayerInput.currentActionMap[InputMapName.Alt].WasReleasedThisFrame();
+        IsShieldPushing = fieldPlayerInput.currentActionMap[InputMapName.Shield].IsPressed();
+        IsSheildInput = fieldPlayerInput.currentActionMap[InputMapName.Shield].WasPressedThisFrame();
+        IsSheildReleased = fieldPlayerInput.currentActionMap[InputMapName.Shield].WasReleasedThisFrame();
         //IsRightInput = menuPlayerInput.currentActionMap[InputMapName.Right].WasPressedThisFrame();
         //IsLeftInput = menuPlayerInput.currentActionMap[InputMapName.Left].WasPressedThisFrame();
         //IsGoToNextSerif.Value = menuPlayerInput.currentActionMap[InputMapName.RightClick].WasPressedThisFrame();

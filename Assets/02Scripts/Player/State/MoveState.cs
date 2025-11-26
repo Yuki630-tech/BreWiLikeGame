@@ -16,6 +16,10 @@ public class MoveState : IState<Player>
         {
             owner.NormalMoveCharConMove.Update(deltaTime);
         }
+        if (InputManager.Instance.IsSheildInput)
+        {
+            owner.StateMachine.ChangeState(owner, Player.PlayerState.Strafe);
+        }
         isGround = owner.NormalMoveCharConMove.IsGround;
         //Debug.Log("CanAttack:" + canAttack);
         //if (InputManager.Instance.IsAttackInput)

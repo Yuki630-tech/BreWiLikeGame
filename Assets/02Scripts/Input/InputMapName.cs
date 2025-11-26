@@ -16,5 +16,5 @@ public static class InputMapName
     public static string Left { get; private set; } = "Left";
     public static string RightClick { get; private set; } = "RightClick";
 
-    public static string Alt { get; private set; } = "ALT";
+    public static string Shield { get; private set; } = "Shield";
 }
