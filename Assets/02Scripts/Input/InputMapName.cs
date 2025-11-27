@@ -17,4 +17,5 @@ public static class InputMapName
     public static string RightClick { get; private set; } = "RightClick";
 
     public static string Shield { get; private set; } = "Shield";
+    public static string ChangeTarget { get; private set; } = "ChangeTarget";
 }

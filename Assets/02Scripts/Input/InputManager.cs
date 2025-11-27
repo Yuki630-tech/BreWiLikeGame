@@ -9,10 +9,13 @@ public class InputManager : Singleton<InputManager>
     [Tooltip("フィールドのPlayerInput"), SerializeField] private PlayerInput fieldPlayerInput;
     [Tooltip("メニューのPlayerInput"), SerializeField] private PlayerInput menuPlayerInput;
 
-    public Vector3 LeftStickInput { get; private set; }
-    public Vector3 RightStickInput { get; private set; }
+    public Vector2 LeftStickInput { get; private set; }
+    public Vector2 RightStickInput { get; private set; }
+
+    public Vector2 ChangeEnemyInput { get; private set; } 
     public bool IsJumpInput { get; private set; }
     public bool IsDashInput { get; private set; }
+    public bool WasDashInputThisFrame { get; private set; }
     public bool IsAttackInput { get; private set; }
     public bool IsQInput {  get; private set; }
     public bool IsEInput { get; private set; }
@@ -39,8 +42,10 @@ public class InputManager : Singleton<InputManager>
     {
         LeftStickInput = fieldPlayerInput.currentActionMap[InputMapName.LeftStick].ReadValue<Vector2>();
         RightStickInput = fieldPlayerInput.currentActionMap[InputMapName.RightStick].ReadValue<Vector2>();
+        ChangeEnemyInput = fieldPlayerInput.currentActionMap[InputMapName.ChangeTarget].ReadValue<Vector2>();
         IsJumpInput = fieldPlayerInput.currentActionMap[InputMapName.Jump].WasPressedThisFrame();
         IsDashInput = fieldPlayerInput.currentActionMap[InputMapName.Dash].IsPressed();
+        WasDashInputThisFrame = fieldPlayerInput.currentActionMap[InputMapName.Dash].WasPressedThisFrame();
         IsAttackInput = fieldPlayerInput.currentActionMap[InputMapName.Attack].WasPressedThisFrame();
         IsQInput = fieldPlayerInput.currentActionMap[InputMapName.Q].WasPressedThisFrame();
         IsEInput = fieldPlayerInput.currentActionMap[InputMapName.E].WasPressedThisFrame();

@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeTarget",
+                    "type": "Value",
+                    "id": "c0f303a9-ca6c-4e0b-8539-feca0f0619b9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -329,11 +338,22 @@
                 {
                     "name": "",
                     "id": "6425ffac-9ee2-49d7-a0ed-0208b91e3381",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Shield",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec447803-b991-455d-b589-1dd1f8a28ae8",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

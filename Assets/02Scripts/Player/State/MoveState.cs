@@ -20,12 +20,19 @@ public class MoveState : IState<Player>
         {
             owner.StateMachine.ChangeState(owner, Player.PlayerState.Strafe);
         }
+
+        if(InputManager.Instance.WasDashInputThisFrame)
+        {
+            owner.WeaponContainer.StopToUseWeapon(WeaponContainer.WeaponKind.Shield);
+            owner.WeaponContainer.StopToUseWeapon(WeaponContainer.WeaponKind.Sword);
+            
+        }
         isGround = owner.NormalMoveCharConMove.IsGround;
         //Debug.Log("CanAttack:" + canAttack);
-        //if (InputManager.Instance.IsAttackInput)
-        //{
-        //    owner.StateMachine.ChangeState(owner, Player.PlayerState.Attack);
-        //}
+        if (InputManager.Instance.IsAttackInput && isGround)
+        {
+            owner.StateMachine.ChangeState(owner, Player.PlayerState.Attack);
+        }
 
         Animate(owner, deltaTime);
     }

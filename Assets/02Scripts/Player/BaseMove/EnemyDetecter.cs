@@ -7,42 +7,86 @@ using UnityEngine;
 public class EnemyDetecter : MonoBehaviour
 {
     [Tooltip("プレイヤー"), SerializeField] private Transform playerTrans;
-    private int index = -1;
+    [Tooltip("プレイヤーカメラ"), SerializeField] private PlayerCamera playerCamera;
+    private int index = 0;
 
-    [Header("敵のリスト"), SerializeField] private List<EnemyInfo> enemyInfoList = new();
+    [Header("敵のリスト"), ReadOnly, SerializeField] private List<GameObject> enemyList = new();
+    private ReactiveProperty<int> enemyCount = new ReactiveProperty<int>();
 
-    public IReadOnlyList<EnemyInfo> EnemyInfoList => enemyInfoList;
+    private ReactiveProperty<Vector2> changeEnemyInputProperty = new();
 
-    [System.Serializable]
-    public class EnemyInfo
+    public IReadOnlyList<GameObject> EnemyList => enemyList;
+
+    public GameObject TargetEnemy { get; private set; }
+    public ReactiveProperty<int> EnemyCount { get => enemyCount; }
+
+    //[System.Serializable]
+    //public class EnemyInfo
+    //{
+    //    public GameObject EnemyObj;
+    //    public float Distance;
+
+
+    //    public EnemyInfo(GameObject enemyObj, float distance)
+    //    {
+    //        EnemyObj = enemyObj;
+    //        Distance = distance;
+    //    }
+    //}
+
+    private void Awake()
     {
-        public GameObject EnemyObj;
-        public float Distance;
+        changeEnemyInputProperty.Where(input => input.y > 0).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
+        changeEnemyInputProperty.Where(input => input.y < 0).Subscribe(_ => RemoveEnemyIndex()).AddTo(gameObject);
 
-        
-        public EnemyInfo(GameObject enemyObj, float distance)
-        {
-            EnemyObj = enemyObj;
-            Distance = distance;
-        }
+        enemyCount.Where(x => x == 0).Subscribe(_ => TargetEnemy = null);
     }
 
     private void Update()
     {
-        foreach(var enemyInfo in enemyInfoList)
-        {
-            enemyInfo.Distance = Vector3.Distance(playerTrans.position, enemyInfo.EnemyObj.transform.position);
-        }
+        //foreach(var enemyInfo in enemyInfoList)
+        //{
+        //    enemyInfo.Distance = Vector3.Distance(playerTrans.position, enemyInfo.EnemyObj.transform.position);
+        //}
+
+        changeEnemyInputProperty.Value = InputManager.Instance.ChangeEnemyInput;
+        enemyCount.Value = enemyList.Count;
     }
 
-    public GameObject GetEnemy()
+    private void AddEnemyIndex()
     {
+        if(enemyList.Count == 0)
+        {
+            TargetEnemy = null;
+            return;
+        }
         index++;
-        if(index == enemyInfoList.Count)
+
+        if (index >= enemyList.Count)
         {
             index = 0;
         }
-        return enemyInfoList[index].EnemyObj;
+
+        TargetEnemy = enemyList[index];
+        playerCamera.SetSecondTarget(TargetEnemy.transform);
+    }
+
+    private void RemoveEnemyIndex()
+    {
+        if(enemyList.Count == 0)
+        {
+            TargetEnemy = null;
+            return;
+        }
+        index--;
+        if(index < 0)
+        {
+            index = enemyList.Count - 1;
+        }
+
+        TargetEnemy = enemyList[index];
+        playerCamera.SetSecondTarget(TargetEnemy.transform);
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,7 +94,9 @@ public class EnemyDetecter : MonoBehaviour
         if (other.CompareTag(TagName.Enemy))
         {
             float distance = Vector3.Distance(playerTrans.position, other.transform.position);
-            enemyInfoList.Add(new(other.gameObject, distance));
+            enemyList.Add(other.gameObject);
+            TargetEnemy = enemyList[index];
+
         }
     }
 
@@ -58,8 +104,7 @@ public class EnemyDetecter : MonoBehaviour
     {
         if (other.CompareTag(TagName.Enemy))
         {
-            EnemyInfo enemyInfo = enemyInfoList.Find(x => x.EnemyObj == other.gameObject);
-            enemyInfoList.Remove(enemyInfo);
+            enemyList.Remove(other.gameObject);
         }
     }
 }

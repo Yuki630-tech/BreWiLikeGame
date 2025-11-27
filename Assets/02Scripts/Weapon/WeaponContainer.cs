@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine.Animations;
+using System;
 
 public class WeaponContainer : MonoBehaviour
 {
@@ -13,19 +14,30 @@ public class WeaponContainer : MonoBehaviour
     [Tooltip("武器を収めているときの親オブジェクトのインデックス"), SerializeField] private int putInWeaponIndex = 1;
     [Tooltip("プレイヤー(攻撃可能フラグを取得するため"), SerializeField] private Player player;
 
+    [Tooltip("武器のParentConstraintデータのリスト"), SerializeField] private List<WeaponParentConstraintData> weaponParentConstraintDataList = new List<WeaponParentConstraintData>();
+
     [Header("武器を使っている状態かどうか"), SerializeField]
     private bool isUse;
     private bool canUse;
 
     private int currentIndex = 0;
 
+    public enum WeaponKind
+    {
+        Sword,
+        Shield,
+        Arrow
+    }
+
+    [Serializable]
+    private class WeaponParentConstraintData
+    {
+        public WeaponKind Kind;
+        public ParentConstraint ParentConstraint;
+    }
+
     public ReactiveProperty<Weapon> CurrentWeapon { get; private set; } = new ReactiveProperty<Weapon>();
     public bool IsUse { get => isUse; }
-
-    public class WeaponParemtConstraintData
-    {
-
-    }
 
     private void Awake()
     {
@@ -76,9 +88,9 @@ public class WeaponContainer : MonoBehaviour
     //    EnableCurrentWeapon();
     //}
 
-    public void StartToUseWeapon()
+    public void StartToUseWeapon(WeaponKind weaponKind)
     {
-        ParentConstraint constraint = CurrentWeapon.Value.GetComponentInParent<ParentConstraint>();
+        ParentConstraint constraint = weaponParentConstraintDataList.Find(x => x.Kind == weaponKind).ParentConstraint;
         if (constraint == null) return;
 
         ConstraintSource srcUse = constraint.GetSource(useWeaponIndex);
@@ -93,9 +105,9 @@ public class WeaponContainer : MonoBehaviour
         isUse = true;
     }
 
-    public void StopToUseWeapon()
+    public void StopToUseWeapon(WeaponKind weaponKind)
     {
-        ParentConstraint constraint = CurrentWeapon.Value != null ? CurrentWeapon.Value.GetComponentInParent<ParentConstraint>() : null;
+        ParentConstraint constraint = weaponParentConstraintDataList.Find(x => x.Kind == weaponKind).ParentConstraint;
 
         if(constraint == null) return;
         ConstraintSource srcUse = constraint.GetSource(useWeaponIndex);

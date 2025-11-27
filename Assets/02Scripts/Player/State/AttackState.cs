@@ -23,7 +23,7 @@ namespace Ikeda
         }
         public void Update(Player owner, float deltaTime)
         {
-            //owner.WeaponAttackStrategyFactory.GetStrategy().Update(owner, deltaTime);
+            owner.WeaponAttackStrategyFactory.GetStrategy().Update(owner, deltaTime);
             //if(attackDirection.magnitude > 0)
             //{
             //    var look = Quaternion.LookRotation(attackDirection);
@@ -32,7 +32,15 @@ namespace Ikeda
             //}
             if (!IsAttacking)
             {
-                owner.StateMachine.ChangeState(owner, Player.PlayerState.Normal);
+                if (InputManager.Instance.IsShieldPushing)
+                {
+                    owner.StateMachine.ChangeState(owner, Player.PlayerState.Strafe);
+                }
+
+                else
+                {
+                    owner.StateMachine.ChangeState(owner, Player.PlayerState.Normal);
+                }
             }
             
         }
@@ -50,15 +58,15 @@ namespace Ikeda
         {
 
             IsAttacking = true;
-            //owner.WeaponAttackStrategyFactory.GetStrategy().Enter(owner);
-            
+            owner.WeaponAttackStrategyFactory.GetStrategy().Enter(owner);
+
         }
 
         public void EndAttack(Player owner)
         {
             IsAttacking = false;
 
-            //owner.WeaponAttackStrategyFactory.GetStrategy().Exit(owner);
+            owner.WeaponAttackStrategyFactory.GetStrategy().Exit(owner);
         }
 
         /// <summary>
@@ -91,7 +99,7 @@ namespace Ikeda
         /// </summary>
         public void StartComboAttack(Player owner)
         {
-
+            owner.WeaponAttackStrategyFactory.GetStrategy().Enter(owner);
         }
 
         public void SetAttackDirection(Player owner)

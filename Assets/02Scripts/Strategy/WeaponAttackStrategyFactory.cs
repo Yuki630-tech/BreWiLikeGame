@@ -5,17 +5,7 @@ public class WeaponAttackStrategyFactory<T> : IStrategyFactory<Weapon.WeaponType
 {
     Dictionary<Weapon.WeaponType, IStrategy<T>> strategies = new Dictionary<Weapon.WeaponType, IStrategy<T>>();
     IStrategy<T> currentAttackStrategy;
-    Weapon.WeaponType currentWeaponType;
-
-    private WeaponContainer weaponContainer;
-
-    public Weapon.WeaponType CurrentWeaponType { get => currentWeaponType; }
-
-    public WeaponAttackStrategyFactory(WeaponContainer setWeaponContainer)
-    {
-        this.weaponContainer = setWeaponContainer;
-    }
-
+    
     /// <summary>
     /// åªç›ÇÃéËñ@
     /// </summary>
@@ -38,7 +28,7 @@ public class WeaponAttackStrategyFactory<T> : IStrategyFactory<Weapon.WeaponType
         {
             Debug.Log($"çUåÇï˚ñ@ÇêÿÇËë÷Ç¶Ç‹ÇµÇΩ : {type.ToString()}");
             currentAttackStrategy = strategies[type];
-            currentWeaponType = type;
+            //currentWeaponType = type;
         }
     }
 
@@ -54,14 +44,14 @@ public class WeaponAttackStrategyFactory<T> : IStrategyFactory<Weapon.WeaponType
 
     public void ChangeStrategy(T owner, Weapon.WeaponType type)
     {
-        if(currentWeaponType == type) return;
+        //if(currentWeaponType == type) return;
         if(currentAttackStrategy != null)
         {
             currentAttackStrategy.Exit(owner);
         }
 
         currentAttackStrategy = strategies[type];
-        currentWeaponType = type;
+        //currentWeaponType = type;
         currentAttackStrategy.Enter(owner);
     }
 }

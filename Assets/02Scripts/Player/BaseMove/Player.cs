@@ -6,6 +6,9 @@ using System.Runtime.CompilerServices;
 
 public class Player : MonoBehaviour
 {
+    [Header("カメラに関する設定")]
+    [Tooltip("PlayerCamera"), SerializeField] private PlayerCamera playerCamera;
+
     [Header("プレイヤーの各コンポーネント")]
     [Tooltip("CharacterController"), SerializeField] private CharacterController characterController;
     [Tooltip("Animator"), SerializeField] private Animator animator;
@@ -21,8 +24,8 @@ public class Player : MonoBehaviour
 
     [Header("攻撃ステートに関する設定")]
     [Tooltip("攻撃可能になるゲームフラグの値"), SerializeField] private int canAttackFlag = 1;
-    //[Tooltip("武器を管理するコンポーネント"), SerializeField] private WeaponContainer weaponContainer;
-    //private WeaponAttackStrategyFactory<Player> weaponAttackStrategyFactory;
+    [Tooltip("武器を管理するコンポーネント"), SerializeField] private WeaponContainer weaponContainer;
+    private WeaponAttackStrategyFactory<Player> weaponAttackStrategyFactory;
 
     [Header("漸滅スキルに関する設定")]
     //[Tooltip("斬撃発生器"), SerializeField] private SlashSpawner slashSpawner;
@@ -54,8 +57,8 @@ public class Player : MonoBehaviour
     public Animator Animator { get => animator; }
     public MoveVectorMaker MoveVectorMaker { get => moveVectorMaker; }
     public CharConMove NormalMoveCharConMove { get => normalMoveCharConMove; }
-    //public WeaponContainer WeaponContainer { get => weaponContainer; }
-    //public WeaponAttackStrategyFactory<Player> WeaponAttackStrategyFactory { get => weaponAttackStrategyFactory; }
+    public WeaponContainer WeaponContainer { get => weaponContainer; }
+    public WeaponAttackStrategyFactory<Player> WeaponAttackStrategyFactory { get => weaponAttackStrategyFactory; }
     //public AttributeSkillStrategyFactory<Player> AttributeStrategyFactory { get => attributeStrategyFactory; set => attributeStrategyFactory = value; }
     public VerticalMoveMaker VerticalMoveMaker { get => verticalMoveMaker; }
     public GroundChecker GroundChecker { get => groundChecker; }
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour
     public int CanAttackFlag { get => canAttackFlag; }
     public MoveVectorMaker StrafeMoveVectorMaker { get => strafeMoveVectorMaker; }
     public EnemyDetecter EnemyDetecter { get => enemyDetecter;}
+    public PlayerCamera PlayerCamera { get => playerCamera; }
     #endregion
     public enum PlayerState
     {
@@ -88,6 +92,10 @@ public class Player : MonoBehaviour
         stateMachine.AddState(PlayerState.Attack, AttackState = new AttackState());
         stateMachine.AddState(PlayerState.Strafe, new StrafeState());
         stateMachine.AddState(PlayerState.Die, new DieState());
+
+        weaponAttackStrategyFactory = new WeaponAttackStrategyFactory<Player>();
+        weaponAttackStrategyFactory.AddStrategy(Weapon.WeaponType.Physical, new PhysicalAttack());
+        weaponAttackStrategyFactory.CreateStrategy(this, Weapon.WeaponType.Physical);
 
         //移動ステートに変更
         stateMachine.ChangeState(this, PlayerState.Normal);
