@@ -958,8 +958,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTrans: {fileID: 543450653428083574}
+  cameraRotSpeed: 2
   playerCamera: {fileID: 828336899}
   enemyList: []
+  targetEnemy: {fileID: 0}
 --- !u!135 &491537526
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1371,6 +1373,7 @@ MonoBehaviour:
   activeCameraPriority: 10
   deActiveCameraPriority: -1
   currentCameraKind: 0
+  goalValue: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

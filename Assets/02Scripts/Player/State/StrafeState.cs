@@ -18,14 +18,25 @@ public class StrafeState : IState<Player>
         owner.WeaponContainer.StartToUseWeapon(WeaponContainer.WeaponKind.Shield);
         owner.PlayerCamera.SetSecondTarget(owner.EnemyDetecter.TargetEnemy.transform);
         //ターゲットとなる敵が近くに一人もいなければ通常のプレイヤーカメラに切り替える
-        owner.EnemyDetecter.EnemyCount.Where(x => x == 0).Subscribe(_ => owner.PlayerCamera.SetCamera(PlayerCamera.CameraKind.Player)).AddTo(disposables);
+        owner.EnemyDetecter.EnemyCount.Where(x => x == 0).Subscribe(__ =>
+        {
+            owner.PlayerCamera.SetCamera(true, PlayerCamera.CameraKind.Player);
+            isSelected = false;
+        }).AddTo(disposables);
         //ターゲットとなる敵がいない状態から初めて敵を見つけたら敵とプレイヤー両方を映すカメラに切り替える
-        owner.EnemyDetecter.EnemyCount.Where(x => x == 1).Subscribe(_ => owner.PlayerCamera.SetCamera(PlayerCamera.CameraKind.TargetGroup)).AddTo(disposables);
+        owner.EnemyDetecter.EnemyCount.Where(x => x == 1 && !isSelected).Subscribe(__ =>
+        {
+            owner.PlayerCamera.SetCamera(false, PlayerCamera.CameraKind.TargetGroup);
+            isSelected = true;
+            _ = owner.PlayerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, owner.transform, owner.EnemyDetecter.TargetEnemy.transform, owner.EnemyDetecter.CameraRotSpeed);
+
+        }).AddTo(disposables);
 
         //最初から2体以上いた場合上のx==1のイベントは発生しないため、2体以上の敵がいたらむりやりTargetGroupカメラに移行させるようにする
         if(owner.EnemyDetecter.EnemyCount.Value >= 2)
         {
-            owner.PlayerCamera.SetCamera(PlayerCamera.CameraKind.TargetGroup);
+            owner.PlayerCamera.SetCamera(false, PlayerCamera.CameraKind.TargetGroup);
+            _ = owner.PlayerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, owner.transform, owner.EnemyDetecter.TargetEnemy.transform, owner.EnemyDetecter.CameraRotSpeed);
         }
 
     }
@@ -37,7 +48,7 @@ public class StrafeState : IState<Player>
             //owner.EnemyDetecter.ChangeEnemy();
             owner.StateMachine.ChangeState(owner, Player.PlayerState.Normal);
             owner.Animator.SetBool(AnimationParametaName.HasShield, false);
-            owner.PlayerCamera.SetCamera(PlayerCamera.CameraKind.Player);
+            owner.PlayerCamera.SetCamera(true, PlayerCamera.CameraKind.Player);
         }
 
         if (owner.IsMovable)

@@ -38,6 +38,11 @@ public class InputManager : Singleton<InputManager>
     public ReactiveProperty<bool> IsDecided { get; internal set; } = new ReactiveProperty<bool>();
     public ReactiveProperty<bool> IsGoToNextSerif { get; internal set; } = new ReactiveProperty<bool>();
 
+    protected override void Awake()
+    {
+        base.Awake();
+        Cursor.lockState = CursorLockMode.Locked;
+    }
     private void Update()
     {
         LeftStickInput = fieldPlayerInput.currentActionMap[InputMapName.LeftStick].ReadValue<Vector2>();

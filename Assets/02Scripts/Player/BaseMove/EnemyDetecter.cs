@@ -7,6 +7,9 @@ using UnityEngine;
 public class EnemyDetecter : MonoBehaviour
 {
     [Tooltip("プレイヤー"), SerializeField] private Transform playerTrans;
+    //[Tooltip("敵方向に向いたカメラの水平方向の角度"), SerializeField] private float horizontalAngle = 0;
+    //[Tooltip("敵方向に向いたカメラの垂直方向の角度"), SerializeField] private float verticalAngle = 45f;
+    [Tooltip("カメラを敵方向に向けるスピード"), SerializeField] private float cameraRotSpeed = 1080f;
     [Tooltip("プレイヤーカメラ"), SerializeField] private PlayerCamera playerCamera;
     private int index = 0;
 
@@ -17,8 +20,11 @@ public class EnemyDetecter : MonoBehaviour
 
     public IReadOnlyList<GameObject> EnemyList => enemyList;
 
-    public GameObject TargetEnemy { get; private set; }
+    [ReadOnly, SerializeField] private GameObject targetEnemy;
+
+    public GameObject TargetEnemy { get => targetEnemy; }
     public ReactiveProperty<int> EnemyCount { get => enemyCount; }
+    public float CameraRotSpeed { get => cameraRotSpeed; }
 
     //[System.Serializable]
     //public class EnemyInfo
@@ -39,7 +45,7 @@ public class EnemyDetecter : MonoBehaviour
         changeEnemyInputProperty.Where(input => input.y > 0).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
         changeEnemyInputProperty.Where(input => input.y < 0).Subscribe(_ => RemoveEnemyIndex()).AddTo(gameObject);
 
-        enemyCount.Where(x => x == 0).Subscribe(_ => TargetEnemy = null);
+        enemyCount.Where(x => x == 0).Subscribe(_ => targetEnemy = null);
     }
 
     private void Update()
@@ -57,7 +63,7 @@ public class EnemyDetecter : MonoBehaviour
     {
         if(enemyList.Count == 0)
         {
-            TargetEnemy = null;
+            targetEnemy = null;
             return;
         }
         index++;
@@ -67,15 +73,17 @@ public class EnemyDetecter : MonoBehaviour
             index = 0;
         }
 
-        TargetEnemy = enemyList[index];
+        targetEnemy = enemyList[index];
         playerCamera.SetSecondTarget(TargetEnemy.transform);
+        _ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
+
     }
 
     private void RemoveEnemyIndex()
     {
         if(enemyList.Count == 0)
         {
-            TargetEnemy = null;
+            targetEnemy = null;
             return;
         }
         index--;
@@ -84,9 +92,9 @@ public class EnemyDetecter : MonoBehaviour
             index = enemyList.Count - 1;
         }
 
-        TargetEnemy = enemyList[index];
+        targetEnemy = enemyList[index];
         playerCamera.SetSecondTarget(TargetEnemy.transform);
-
+        _ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -95,7 +103,7 @@ public class EnemyDetecter : MonoBehaviour
         {
             float distance = Vector3.Distance(playerTrans.position, other.transform.position);
             enemyList.Add(other.gameObject);
-            TargetEnemy = enemyList[index];
+            targetEnemy = enemyList[index];
 
         }
     }
@@ -105,6 +113,13 @@ public class EnemyDetecter : MonoBehaviour
         if (other.CompareTag(TagName.Enemy))
         {
             enemyList.Remove(other.gameObject);
+            index = 0;
+            if(targetEnemy == other.gameObject && enemyCount.Value > 0)
+            {
+                targetEnemy = enemyList[index];
+                playerCamera.SetSecondTarget(TargetEnemy.transform);
+                _ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
+            }
         }
     }
 }
