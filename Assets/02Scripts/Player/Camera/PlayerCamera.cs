@@ -88,7 +88,6 @@ public class PlayerCamera : MonoBehaviour
                 cinemachineOrbitalFollow.HorizontalAxis.Value = horizontalAxisValue;
                 await UniTask.Yield();
             }
-            cinemachineOrbitalFollow.HorizontalAxis.Value = goalValue;
         }
 
         catch

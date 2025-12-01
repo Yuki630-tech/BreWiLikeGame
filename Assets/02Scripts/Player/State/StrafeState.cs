@@ -6,36 +6,49 @@ public class StrafeState : IState<Player>
 {
     private float strafeAnimDirection;
     private Vector3 direction;
-    private GameObject enemyObj;
+    private ReactiveProperty<GameObject> enemyObj = new();
     private Quaternion look;
     private float damp = 0.05f;
     private bool isSelected = false;
     CompositeDisposable disposables = new();
     public void Enter(Player owner)
     {
-        owner.Animator.SetBool(AnimationParametaName.HasShield, true);
+        if (owner.EnemyDetecter.TargetEnemy != null)
+        {
+            owner.PlayerCamera.SetCamera(false, PlayerCamera.CameraKind.TargetGroup);
+            owner.PlayerCamera.SetSecondTarget(owner.EnemyDetecter.transform);
+            _ = owner.PlayerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, owner.transform, owner.EnemyDetecter.TargetEnemy.transform, owner.EnemyDetecter.CameraRotSpeed);
+        }
+
+        else
+        {
+            owner.PlayerCamera.SetCamera(true, PlayerCamera.CameraKind.Player);
+        }
+            owner.Animator.SetBool(AnimationParametaName.HasShield, true);
         isSelected = false;
         owner.WeaponContainer.StartToUseWeapon(WeaponContainer.WeaponKind.Shield);
-        owner.PlayerCamera.SetSecondTarget(owner.EnemyDetecter.TargetEnemy.transform);
         //ターゲットとなる敵が近くに一人もいなければ通常のプレイヤーカメラに切り替える
-        owner.EnemyDetecter.EnemyCount.Where(x => x == 0).Subscribe(__ =>
+        enemyObj.Where(x => x == null).Subscribe(__ =>
         {
+            Debug.Log("敵がいなくなりました");
             owner.PlayerCamera.SetCamera(true, PlayerCamera.CameraKind.Player);
             isSelected = false;
         }).AddTo(disposables);
         //ターゲットとなる敵がいない状態から初めて敵を見つけたら敵とプレイヤー両方を映すカメラに切り替える
-        owner.EnemyDetecter.EnemyCount.Where(x => x == 1 && !isSelected).Subscribe(__ =>
+        enemyObj.Where(x => x != null).Subscribe(x =>
         {
             owner.PlayerCamera.SetCamera(false, PlayerCamera.CameraKind.TargetGroup);
+            owner.PlayerCamera.SetSecondTarget(x.transform);
             isSelected = true;
-            _ = owner.PlayerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, owner.transform, owner.EnemyDetecter.TargetEnemy.transform, owner.EnemyDetecter.CameraRotSpeed);
+            _ = owner.PlayerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, owner.transform, x.transform, owner.EnemyDetecter.CameraRotSpeed);
 
         }).AddTo(disposables);
 
         //最初から2体以上いた場合上のx==1のイベントは発生しないため、2体以上の敵がいたらむりやりTargetGroupカメラに移行させるようにする
-        if(owner.EnemyDetecter.EnemyCount.Value >= 2)
+        if (owner.EnemyDetecter.EnemyCount.Value >= 2)
         {
             owner.PlayerCamera.SetCamera(false, PlayerCamera.CameraKind.TargetGroup);
+            owner.PlayerCamera.SetSecondTarget(owner.EnemyDetecter.TargetEnemy.transform);
             _ = owner.PlayerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, owner.transform, owner.EnemyDetecter.TargetEnemy.transform, owner.EnemyDetecter.CameraRotSpeed);
         }
 
@@ -62,7 +75,8 @@ public class StrafeState : IState<Player>
             owner.StateMachine.ChangeState(owner, Player.PlayerState.Attack);
         }
 
-       
+        enemyObj.Value = owner.EnemyDetecter.TargetEnemy;
+
     }
 
     public void Exit(Player owner)
@@ -73,7 +87,7 @@ public class StrafeState : IState<Player>
             owner.WeaponContainer.StopToUseWeapon(WeaponContainer.WeaponKind.Shield);
             owner.WeaponContainer.StopToUseWeapon(WeaponContainer.WeaponKind.Sword);
         }
-        if(disposables.Count > 0)
+        if (disposables.Count > 0)
         {
             disposables.Dispose();
 
@@ -84,11 +98,10 @@ public class StrafeState : IState<Player>
     {
         owner.StrafeMoveVectorMaker.MakeMoveVector();
 
-        if(owner.EnemyDetecter.EnemyList.Count > 0)
+        if (enemyObj.Value != null)
         {
             owner.StrafeMoveVectorMaker.SetIfTurnToCamera(false);
-            enemyObj = owner.EnemyDetecter.TargetEnemy;
-            direction = (enemyObj.transform.position - owner.transform.position);
+            direction = (enemyObj.Value.transform.position - owner.transform.position);
             direction.y = 0f;
             look = Quaternion.LookRotation(direction);
             owner.transform.rotation = look;
@@ -113,5 +126,5 @@ public class StrafeState : IState<Player>
         owner.Animator.SetFloat(AnimationParametaName.ShieldMoveZ, owner.StrafeMoveVectorMaker.MoveVector.z, damp, deltaTime);
     }
 
-   
+
 }

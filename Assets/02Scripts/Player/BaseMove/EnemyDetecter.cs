@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ public class EnemyDetecter : MonoBehaviour
     private int index = 0;
 
     [Header("“G‚ÌƒŠƒXƒg"), ReadOnly, SerializeField] private List<GameObject> enemyList = new();
-    private ReactiveProperty<int> enemyCount = new ReactiveProperty<int>();
+    [SerializeField, ReadOnly] private ReactiveProperty<int> enemyCount = new ReactiveProperty<int>();
 
     private ReactiveProperty<Vector2> changeEnemyInputProperty = new();
 
@@ -114,11 +115,10 @@ public class EnemyDetecter : MonoBehaviour
         {
             enemyList.Remove(other.gameObject);
             index = 0;
-            if(targetEnemy == other.gameObject && enemyCount.Value > 0)
+            Debug.Log(enemyCount);
+            if(targetEnemy == other.gameObject)
             {
-                targetEnemy = enemyList[index];
-                playerCamera.SetSecondTarget(TargetEnemy.transform);
-                _ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
+                targetEnemy = null;
             }
         }
     }
