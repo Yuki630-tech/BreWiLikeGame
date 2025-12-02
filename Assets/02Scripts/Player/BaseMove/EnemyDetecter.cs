@@ -11,7 +11,7 @@ public class EnemyDetecter : MonoBehaviour
     //[Tooltip("敵方向に向いたカメラの水平方向の角度"), SerializeField] private float horizontalAngle = 0;
     //[Tooltip("敵方向に向いたカメラの垂直方向の角度"), SerializeField] private float verticalAngle = 45f;
     [Tooltip("カメラを敵方向に向けるスピード"), SerializeField] private float cameraRotSpeed = 1080f;
-    [Tooltip("プレイヤーカメラ"), SerializeField] private PlayerCamera playerCamera;
+    //[Tooltip("プレイヤーカメラ"), SerializeField] private PlayerCamera playerCamera;
     private int index = 0;
 
     [Header("敵のリスト"), ReadOnly, SerializeField] private List<GameObject> enemyList = new();
@@ -21,9 +21,9 @@ public class EnemyDetecter : MonoBehaviour
 
     public IReadOnlyList<GameObject> EnemyList => enemyList;
 
-    [ReadOnly, SerializeField] private GameObject targetEnemy;
+    [ReadOnly, SerializeField] private ReactiveProperty<GameObject> targetEnemy = new();
 
-    public GameObject TargetEnemy { get => targetEnemy; }
+    public ReactiveProperty<GameObject> TargetEnemy { get => targetEnemy; }
     public ReactiveProperty<int> EnemyCount { get => enemyCount; }
     public float CameraRotSpeed { get => cameraRotSpeed; }
 
@@ -43,12 +43,21 @@ public class EnemyDetecter : MonoBehaviour
 
     private void Awake()
     {
-        changeEnemyInputProperty.Where(input => input.y > 0).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
-        changeEnemyInputProperty.Where(input => input.y < 0).Subscribe(_ => RemoveEnemyIndex()).AddTo(gameObject);
+        
+        changeEnemyInputProperty.Where(input => input.y > 0 && InputManager.Instance.IsShieldPushing && enemyCount.Value > 1).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
+        changeEnemyInputProperty.Where(input => input.y < 0 && InputManager.Instance.IsShieldPushing && enemyCount.Value > 1).Subscribe(_ => RemoveEnemyIndex()).AddTo(gameObject);
 
-        enemyCount.Where(x => x == 0).Subscribe(_ => targetEnemy = null);
+        enemyCount.Where(x => x == 0 && targetEnemy != null).Subscribe(_ =>
+        {
+            targetEnemy.Value = null;
+        }).AddTo(gameObject);
+        enemyCount.Where(x => x > 0 && !enemyList.Contains(targetEnemy.Value) && enemyCount.Value > 1).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
     }
 
+    private void OnEnable()
+    {
+        ComponentProvider.Instance.SetEnemyDetecter(this);
+    }
     private void Update()
     {
         //foreach(var enemyInfo in enemyInfoList)
@@ -64,7 +73,7 @@ public class EnemyDetecter : MonoBehaviour
     {
         if(enemyList.Count == 0)
         {
-            targetEnemy = null;
+            targetEnemy.Value = null;
             return;
         }
         index++;
@@ -74,17 +83,18 @@ public class EnemyDetecter : MonoBehaviour
             index = 0;
         }
 
-        targetEnemy = enemyList[index];
-        playerCamera.SetSecondTarget(TargetEnemy.transform);
-        _ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
+        targetEnemy.Value = enemyList[index];
 
+        //playerCamera.SetSecondTarget(TargetEnemy.transform);
+        //_ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
     }
 
     private void RemoveEnemyIndex()
     {
-        if(enemyList.Count == 0)
+
+        if (enemyList.Count == 0)
         {
-            targetEnemy = null;
+            targetEnemy.Value = null;
             return;
         }
         index--;
@@ -93,9 +103,9 @@ public class EnemyDetecter : MonoBehaviour
             index = enemyList.Count - 1;
         }
 
-        targetEnemy = enemyList[index];
-        playerCamera.SetSecondTarget(TargetEnemy.transform);
-        _ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
+        targetEnemy.Value = enemyList[index];
+        //playerCamera.SetSecondTarget(TargetEnemy.transform);
+        //_ = playerCamera.LookAt(PlayerCamera.CameraKind.TargetGroup, playerTrans, TargetEnemy.transform, cameraRotSpeed);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -104,7 +114,11 @@ public class EnemyDetecter : MonoBehaviour
         {
             float distance = Vector3.Distance(playerTrans.position, other.transform.position);
             enemyList.Add(other.gameObject);
-            targetEnemy = enemyList[index];
+            if(targetEnemy.Value == null)
+            {
+                targetEnemy.Value = other.gameObject;
+                index = enemyList.IndexOf(targetEnemy.Value);
+            }
 
         }
     }
@@ -114,12 +128,6 @@ public class EnemyDetecter : MonoBehaviour
         if (other.CompareTag(TagName.Enemy))
         {
             enemyList.Remove(other.gameObject);
-            index = 0;
-            Debug.Log(enemyCount);
-            if(targetEnemy == other.gameObject)
-            {
-                targetEnemy = null;
-            }
         }
     }
 }

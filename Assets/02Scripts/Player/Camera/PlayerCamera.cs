@@ -4,17 +4,23 @@ using System.Threading;
 using Unity.Cinemachine;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using UniRx;
 public class PlayerCamera : MonoBehaviour
 {
     [Tooltip("CinemachineCamraのデータのリスト"), SerializeField] private List<CameraData> cameraDataList = new();
+    [Tooltip("PlayerのTransform"), SerializeField] private Transform playerTrans;
     [Tooltip("TargetGroup"), SerializeField] private CinemachineTargetGroup targetGroup;
     [Tooltip("アクティブなCinemachineCamraの優先度"), SerializeField] private int activeCameraPriority = 10;
+    [Tooltip("敵の方向に向く速度"), SerializeField] private float rotSpeed = 2f;
     [Tooltip("非アクティブなCinemachineCameraの優先度"), SerializeField] private int deActiveCameraPriority = -1;
     [ReadOnly, SerializeField] private CameraKind currentCameraKind;
 
     [ReadOnly, SerializeField] private float goalValue;
 
     private CancellationTokenSource cts = new();
+
+    public float RotSpeed { get => rotSpeed; }
+
     public enum CameraKind
     {
         Player,
@@ -31,6 +37,14 @@ public class PlayerCamera : MonoBehaviour
     private void Awake()
     {
         currentCameraKind = cameraDataList.Find(x => x.CinemachineCamra.Priority == activeCameraPriority).CameraKind;
+        ComponentProvider.Instance.EnemyDetecter.TargetEnemy.Where(x => x != null && InputManager.Instance.IsShieldPushing).Subscribe(x =>
+        {
+            SetCamera(false, CameraKind.TargetGroup);
+            SetSecondTarget(x.transform);
+            _ = LookAt(CameraKind.TargetGroup, playerTrans, x.transform, rotSpeed);
+        }).AddTo(gameObject);
+
+        ComponentProvider.Instance.EnemyDetecter.TargetEnemy.Where(x => x == null).Subscribe(_ => SetCamera(true, CameraKind.Player)).AddTo(gameObject);
     }
 
     private void OnEnable()

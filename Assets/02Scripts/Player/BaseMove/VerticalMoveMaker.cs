@@ -17,7 +17,7 @@ public class VerticalMoveMaker
     public void Update(float deltaTime)
     {
         
-        if (groundChecker.IsGround)
+        if (!groundChecker.IsCalculateVerticalSpeed)
         {
             if(verticalSpeed <= 0f)
             {

@@ -31,16 +31,18 @@ public class CharConMove
 
     private void MakeVector(float deltaTime)
     {
-        if (verticalMoveMaker.VerticalSpeed <= 0f)
-        {
-            isGround = groundChecker.IsGround;
-        }
+        //if (verticalMoveMaker.VerticalSpeed <= 0f)
+        //{
+        //    isGround = groundChecker.IsGround;
+        //}
 
-        else
-        {
-            //Debug.Log("プレイヤーが飛びあがった");
-            isGround = false;
-        }
+        //else
+        //{
+        //    //Debug.Log("プレイヤーが飛びあがった");
+        //    isGround = false;
+        //}
+
+        isGround = groundChecker.IsGround;
         moveVectorMaker.MakeMoveVector();
         verticalMoveMaker.Update(deltaTime);
         verticalVector = verticalMoveMaker.FallVector;
