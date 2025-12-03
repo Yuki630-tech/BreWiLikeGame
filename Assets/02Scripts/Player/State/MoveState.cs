@@ -47,13 +47,14 @@ public class MoveState : IState<Player>
         if(owner.IsMovable)
         {
             animSpeed = InputManager.Instance.IsDashInput ? 2f * owner.MoveVectorMaker.InputVector.magnitude : 1f * owner.MoveVectorMaker.InputVector.magnitude;
+            //animSpeed = owner.MoveVectorMaker.MoveVector.magnitude;
 
         }
         owner.Animator.SetFloat(AnimationParametaName.Move, animSpeed, animationDamp, deltaTime);
         owner.Animator.SetFloat(AnimationParametaName.FallSpeed, owner.VerticalMoveMaker.VerticalSpeed, animationDamp, Time.deltaTime);
         owner.Animator.SetBool(AnimationParametaName.IsGround, isGround);
-        float animationSpeed = owner.IsMovable ? 1f : 0f;
-        owner.Animator.SetFloat(AnimationParametaName.AnimationSpeed, animationSpeed);
+        float animationSpeedForBlentTree = owner.IsMovable ? 1f : 0f;
+        owner.Animator.SetFloat(AnimationParametaName.AnimationSpeedForBlendTree, animationSpeedForBlentTree);
 
     }
 }

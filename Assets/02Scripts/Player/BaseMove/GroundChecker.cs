@@ -51,9 +51,9 @@ public class GroundChecker : MonoBehaviour
                 Normal = hit.normal;
                 Vector3 hitPoint = new Vector3(transform.position.x, hit.point.y, transform.position.z);
                 GroundPoint = hit.point;
-                float distance = Vector3.Distance(transform.position, hitPoint);
+                float distance = (transform.position - hit.point).magnitude;
 
-                GroundOffset = -transform.up * (distance + radius);
+                GroundOffset = -transform.up * distance;
             }
 
             else
