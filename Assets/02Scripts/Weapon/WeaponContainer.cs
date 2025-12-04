@@ -18,9 +18,9 @@ public class WeaponContainer : MonoBehaviour
 
     [Header("•Ší‚ğg‚Á‚Ä‚¢‚éó‘Ô‚©‚Ç‚¤‚©"), SerializeField]
     private bool isUse;
-    private bool canUse;
+    //private bool canUse;
 
-    private int currentIndex = 0;
+    //private int currentIndex = 0;
 
     public enum WeaponKind
     {
@@ -41,7 +41,7 @@ public class WeaponContainer : MonoBehaviour
 
     private void Awake()
     {
-        canUse = true;
+        //canUse = true;
     }
 
     private void Update()

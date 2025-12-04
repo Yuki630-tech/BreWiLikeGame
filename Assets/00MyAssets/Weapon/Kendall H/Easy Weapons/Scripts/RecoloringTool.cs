@@ -163,18 +163,18 @@ namespace EasyWeapon
                             meshes.Add(sk.sharedMesh);
                         }
 
-                        string filePath = EditorUtility.SaveFilePanelInProject("Save " + objectName, objectName, "asset", "");
-                        if (filePath == "") { return; }
+                        //string filePath = EditorUtility.SaveFilePanelInProject("Save " + objectName, objectName, "asset", "");
+                        //if (filePath == "") { return; }
 
                         string minus1Path = "";
 
-                        string[] splitPath = filePath.Split(char.Parse("/"));
+                        //string[] splitPath = filePath.Split(char.Parse("/"));
 
-                        for (int i = 0; i < splitPath.Length - 1; i++)
-                        {
-                            minus1Path += splitPath[i];
-                            minus1Path += "/";
-                        }
+                        //for (int i = 0; i < splitPath.Length - 1; i++)
+                        //{
+                        //    minus1Path += splitPath[i];
+                        //    minus1Path += "/";
+                        //}
 
                         minus1Path += objectName;
 
@@ -187,7 +187,7 @@ namespace EasyWeapon
 
                             usedPath += indexA + "_Mesh.asset";
 
-                            AssetDatabase.CreateAsset(mesh, usedPath);
+                            //AssetDatabase.CreateAsset(mesh, usedPath);
 
 
                             indexA++;
@@ -195,19 +195,19 @@ namespace EasyWeapon
 
                         string newPath = minus1Path + ".prefab";
 
-                        bool prefabSuccess;
-                        PrefabUtility.SaveAsPrefabAssetAndConnect(currentReColored, newPath, InteractionMode.UserAction, out prefabSuccess);
+                        //bool prefabSuccess;
+                        //PrefabUtility.SaveAsPrefabAssetAndConnect(currentReColored, newPath, InteractionMode.UserAction, out prefabSuccess);
 
-                        PrefabUtility.ApplyPrefabInstance(currentReColored, InteractionMode.UserAction);
+                        //PrefabUtility.ApplyPrefabInstance(currentReColored, InteractionMode.UserAction);
 
-                        if (prefabSuccess)
-                        {
-                            Debug.Log("Asset saved to " + newPath);
-                        }
-                        else
-                        {
-                            Debug.Log("Asset failed to save");
-                        }
+                        //if (prefabSuccess)
+                        //{
+                        //    Debug.Log("Asset saved to " + newPath);
+                        //}
+                        //else
+                        //{
+                        //    Debug.Log("Asset failed to save");
+                        //}
 
                     }
                     else

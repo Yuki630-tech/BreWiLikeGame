@@ -86,9 +86,9 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        ComponentProvider.Instance.SetPlayerTrans(transform);
         //playerAnimator.enabled = false;
         isMovable = true;
-
 
         //ステートマシンに移動ステート、攻撃ステートを追加
         normalMoveCharConMove = new CharConMove(characterController, moveVectorMaker, verticalMoveMaker, groundChecker, jumpPower);

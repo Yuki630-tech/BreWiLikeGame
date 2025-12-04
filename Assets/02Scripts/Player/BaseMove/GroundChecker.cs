@@ -16,7 +16,7 @@ public class GroundChecker : MonoBehaviour
 
 
     [Header("Gizmosの色→青")]
-    [Tooltip("足が浮いてしまったときに最大この距離だけ下にいったところに地面があったら地面判定にする"), SerializeField] private float groundDistanceIfFloating = 0.8f;
+    //[Tooltip("足が浮いてしまったときに最大この距離だけ下にいったところに地面があったら地面判定にする"), SerializeField] private float groundDistanceIfFloating = 0.8f;
 
     public Vector3 Normal { get; private set; }
     public Vector3 GroundOffset { get; private set; }

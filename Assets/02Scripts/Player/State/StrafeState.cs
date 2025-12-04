@@ -7,7 +7,7 @@ public class StrafeState : IState<Player>
     private Vector3 direction;
     private Quaternion look;
     private float damp = 0.05f;
-    private bool isSelected = false;
+    //private bool isSelected = false;
     CompositeDisposable disposables;
     public void Enter(Player owner)
     {
@@ -65,7 +65,7 @@ public class StrafeState : IState<Player>
         if(owner.EnemyDetecter.TargetEnemy.Value != null)
         {
             TargetMarkerSpawner markerSpwner = owner.EnemyDetecter.TargetEnemy.Value.GetComponent<TargetMarkerSpawner>();
-            markerSpwner.SetTarget(false);
+            markerSpwner?.SetTarget(false);
         }
 
     }

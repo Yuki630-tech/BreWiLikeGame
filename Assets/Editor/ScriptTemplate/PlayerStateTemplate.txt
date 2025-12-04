@@ -1,0 +1,18 @@
+public class #SCRIPTNAME# : IState<Player>
+{
+    public void Enter(Player owner)
+    {
+        
+    }
+
+    public void Update(Player owner, float deltaTime)
+    {
+        
+    }
+
+    public void Exit(Player owner)
+    {
+
+    }
+
+}

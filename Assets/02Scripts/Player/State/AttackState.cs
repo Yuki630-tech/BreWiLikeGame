@@ -14,7 +14,7 @@ namespace Ikeda
         public bool IsAttacking { get; private set; }
 
         private Vector3 attackDirection;    //プレイヤーの攻撃方向
-        private float rotSpeed = 1080f;     //プレイヤーの回転速度
+        //private float rotSpeed = 1080f;     //プレイヤーの回転速度
 
         public void Enter(Player owner)
         {
