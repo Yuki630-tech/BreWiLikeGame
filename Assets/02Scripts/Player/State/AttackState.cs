@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
@@ -49,6 +50,12 @@ namespace Ikeda
             //Debug.Log("èIóπÅ®çUåÇèàóù");
             attackDirection = Vector3.zero;
             //owner.PlayerAnimator.enabled = false;
+
+            if (InputManager.Instance.IsDashInput)
+            {
+                owner.WeaponContainer.StopToUseWeapon(WeaponContainer.WeaponKind.Sword);
+                owner.WeaponContainer.StopToUseWeapon(WeaponContainer.WeaponKind.Shield);
+            }
         }
 
         /// <summary>

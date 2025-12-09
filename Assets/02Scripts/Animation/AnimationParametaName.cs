@@ -19,9 +19,5 @@ public static class AnimationParametaName
     public static string ShieldMoveX { get; private set; } = "ShieldMoveX";
     public static string ShieldMoveZ { get; private set; } = "ShieldMoveZ";
     public static string Jump { get; private set; } = "Jump";
-    public static string MoveAnimSpeed { get; private set; } = "MoveAnimSpeed";
-
-    public static float WalkAnimSpeed { get; private set; } = 2.609776f;
-    public static float DAshAnimSpeed { get; private set; } = 5.096277f;
 
 }

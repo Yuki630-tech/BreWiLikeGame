@@ -4,7 +4,7 @@ using UniRx;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 {
     [Header("カメラに関する設定")]
     [Tooltip("PlayerCamera"), SerializeField] private PlayerCamera playerCamera;
@@ -42,6 +42,10 @@ public class Player : MonoBehaviour
 
     [Header("移動できる状態かどうか"), SerializeField] private bool isMovable;
 
+    [Header("ジャスト回避できるか"), ReadOnly, SerializeField] private bool isJustAvoidable;
+
+    [Header("ジャストガードできるか"), ReadOnly, SerializeField] private bool isJustGurdable;
+
     public bool IsCanChangeState = true;
 
     //[Tooltip("攻撃中のWallChecker"), SerializeField] private WallChecker wallChecker;
@@ -75,6 +79,8 @@ public class Player : MonoBehaviour
     public PlayerCamera PlayerCamera { get => playerCamera; }
     public float WalkAnimSpeed { get => walkAnimSpeed; }
     public float DashAnimSpeed { get => dashAnimSpeed; }
+    public bool IsJustAvoidable { get => isJustAvoidable; }
+    public bool IsJustGurdable { get => isJustGurdable; }
     #endregion
     public enum PlayerState
     {
@@ -131,16 +137,13 @@ public class Player : MonoBehaviour
         isMovable = setMovable;
     }
 
-    public void SetMovableForSignalReceiver()
+    public void SetIfJustAvoidable(bool value)
     {
-        SetIfMovable(true);
-    }
-    
-    public void SetImmovableForSignalReceiver()
-    {
-        SetIfMovable(false);
+        isJustAvoidable = value;
     }
 
-
-
+    public void SetIfJustGurdable(bool value)
+    {
+        isJustAvoidable = value;
+    }
 }

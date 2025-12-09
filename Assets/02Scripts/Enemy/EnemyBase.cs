@@ -10,10 +10,12 @@ public class EnemyBase : MonoBehaviour
     [Tooltip("Animator"), SerializeField] private Animator animator;
 
     public NavMeshAgent NavmeshAgent { get => navmeshAgent; }
+    public Animator Animator { get => animator; }
+    public StateMachine<EnemyState, EnemyBase> StateMachine { get => stateMachine; }
 
     public enum EnemyState
     {
-        TestIdle,
+        Idle,
         Patrol,
         Alert,
         Chase,
