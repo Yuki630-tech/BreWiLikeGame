@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 {
+
     [Header("カメラに関する設定")]
     [Tooltip("PlayerCamera"), SerializeField] private PlayerCamera playerCamera;
 
@@ -16,8 +17,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     [Header("移動に関する設定")]
     [Tooltip("移動ベクトル作成用のコンポーネント"), SerializeField] private MoveVectorMaker moveVectorMaker = new MoveVectorMaker();
     [Tooltip("ジャンプ力"), SerializeField] private float jumpPower;
-    [Tooltip("歩行アニメーションの1倍速時の速度"), SerializeField] private float walkAnimSpeed = 1f;
-    [Tooltip("ダッシュアニメーションの1倍速時の速度"), SerializeField] private float dashAnimSpeed = 1.6f;
+    //[Tooltip("歩行アニメーションの1倍速時の速度"), SerializeField] private float walkAnimSpeed = 1f;
+    //[Tooltip("ダッシュアニメーションの1倍速時の速度"), SerializeField] private float dashAnimSpeed = 1.6f;
     private CharConMove normalMoveCharConMove; //CharacterControllerを使って通常移動するためのクラス
 
     [Header("Strafeに関する設定")]
@@ -77,10 +78,11 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     public MoveVectorMaker StrafeMoveVectorMaker { get => strafeMoveVectorMaker; }
     public EnemyDetecter EnemyDetecter { get => enemyDetecter;}
     public PlayerCamera PlayerCamera { get => playerCamera; }
-    public float WalkAnimSpeed { get => walkAnimSpeed; }
-    public float DashAnimSpeed { get => dashAnimSpeed; }
+    //public float WalkAnimSpeed { get => walkAnimSpeed; }
+    //public float DashAnimSpeed { get => dashAnimSpeed; }
     public bool IsJustAvoidable { get => isJustAvoidable; }
     public bool IsJustGurdable { get => isJustGurdable; }
+    
     #endregion
     public enum PlayerState
     {
@@ -97,7 +99,7 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
         isMovable = true;
 
         //ステートマシンに移動ステート、攻撃ステートを追加
-        normalMoveCharConMove = new CharConMove(characterController, moveVectorMaker, verticalMoveMaker, groundChecker, jumpPower);
+        normalMoveCharConMove = new CharConMove(transform, characterController, moveVectorMaker, verticalMoveMaker, groundChecker, jumpPower);
         stateMachine.AddState(PlayerState.Normal, new MoveState());
         stateMachine.AddState(PlayerState.Attack, AttackState = new AttackState());
         stateMachine.AddState(PlayerState.Strafe, new StrafeState());

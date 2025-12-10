@@ -7,7 +7,7 @@ public class MoveState : IState<Player>
     private float animSpeed;
     public void Enter(Player owner)
     {
-        
+        owner.Animator.SetBool(AnimationParametaName.HasShield, false);
     }
 
     public void Update(Player owner, float deltaTime)

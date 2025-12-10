@@ -3,6 +3,7 @@ using UnityEngine;
 [Serializable]
 public class VerticalMoveMaker
 {
+    [Tooltip("PlayerのTransform"), SerializeField] private Transform playerTrans;
     [Tooltip("重力"), SerializeField] private float gravity;
     [Tooltip("落下速度の最大値"), SerializeField] private float maxFallSpeed = 100f;
     [Tooltip("接地判定"), SerializeField] private GroundChecker groundChecker;
@@ -33,6 +34,10 @@ public class VerticalMoveMaker
         }
 
         fallVector = new Vector3(0f, verticalSpeed, 0f);
+
+       
+
+       
     }
 
     public void Jump(float jumpPower)

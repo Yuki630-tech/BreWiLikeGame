@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CharConMove
 {
+    private Transform playerTrans;
     private CharacterController characterController;
     private MoveVectorMaker moveVectorMaker;
     private VerticalMoveMaker verticalMoveMaker;
@@ -11,8 +12,9 @@ public class CharConMove
     private float jumpPower;
     private Vector3 move;
 
-    public CharConMove(CharacterController setCharacterController, MoveVectorMaker setMoveVectorMaker,  VerticalMoveMaker setVerticalMoveMaker, GroundChecker setGroundChecker, float setJumpPower)
+    public CharConMove(Transform setTrans, CharacterController setCharacterController, MoveVectorMaker setMoveVectorMaker,  VerticalMoveMaker setVerticalMoveMaker, GroundChecker setGroundChecker, float setJumpPower)
     {
+        playerTrans = setTrans;
         moveVectorMaker = setMoveVectorMaker;
         verticalMoveMaker = setVerticalMoveMaker;
         groundChecker = setGroundChecker;
@@ -46,7 +48,30 @@ public class CharConMove
         moveVectorMaker.MakeMoveVector();
         verticalMoveMaker.Update(deltaTime);
         verticalVector = verticalMoveMaker.FallVector;
-        move = moveVectorMaker.MoveVector + verticalVector;
+        move = moveVectorMaker.MoveVector;
+
+        float diff = Vector3.Angle(playerTrans.up, groundChecker.Normal);
+        Debug.Log("ƒvƒŒƒCƒ„[‚Æ’n–Ê‚Ì‚ü‚Æ‚ÌŠp“x : " + diff);
+        if (diff > groundChecker.GroundSlopeLimit && verticalVector.y < 0)
+        {
+            Debug.Log("ŠŠ‚è—Ž‚¿‚éŠp“x‚Å‚·");
+            //â‚ÉŒü‚©‚Á‚ÄˆÚ“®‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚é‚©”»’è(0–¢–ž¨â“¹‚Ì‚ü‚Æ‚Í‹tŒü‚«‚È‚çâ“¹‚ð“o‚ë‚¤‚Æ‚µ‚Ä‚¢‚é
+            float upDot = Vector3.Dot(move, groundChecker.Normal);
+
+            if(upDot < 0)
+            {
+                Vector3 normal_XZ = new Vector3(groundChecker.Normal.x, 0f, groundChecker.Normal.z).normalized;
+
+                float ascend = Vector3.Dot(move, normal_XZ);
+
+                Vector3 cancelVec = normal_XZ * Mathf.Abs(ascend);
+
+                move = move + cancelVec;
+            }
+            verticalVector = Vector3.ProjectOnPlane(verticalVector, groundChecker.Normal);
+        }
+
+        move += verticalVector;
         if (InputManager.Instance.IsJumpInput && isGround)
         {
             verticalMoveMaker.Jump(jumpPower);

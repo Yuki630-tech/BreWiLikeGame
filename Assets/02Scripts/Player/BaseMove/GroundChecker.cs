@@ -8,9 +8,12 @@ public class GroundChecker : MonoBehaviour
     [Tooltip("レイの長さ"), SerializeField] private float length;
     [Tooltip("レイヤーマスク"), SerializeField] private LayerMask layerMask;
     [Tooltip("足が浮いてからこの時間の間はisGround = trueに"), SerializeField] private float groundWaitTime = 0.05f;
+    [Tooltip("落下扱いにする坂の角度"), SerializeField] private float groundSlopeLimit = 60f;
 
     [Header("接地しているか"), SerializeField] private bool isGround;
     [Header("下方向の速さを計算するか"), SerializeField] private bool isCalculateVerticalSpeed;
+
+    [Header("地面の垂線とプレイヤーとの角度"), ReadOnly, SerializeField] private float difference;
 
     private float currentTime;
 
@@ -24,6 +27,7 @@ public class GroundChecker : MonoBehaviour
 
     public Vector3 GroundPoint { get; private set; }
     public bool IsCalculateVerticalSpeed { get => isCalculateVerticalSpeed; }
+    public float GroundSlopeLimit { get => groundSlopeLimit; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,9 +50,19 @@ public class GroundChecker : MonoBehaviour
         {
             if(hit.collider.CompareTag(TagName.Ground))
             {
-                isGround = true;
-                isCalculateVerticalSpeed = false;
+                
                 Normal = hit.normal;
+                difference = Vector3.Angle(transform.up, Normal);
+                if(difference < groundSlopeLimit)
+                {
+                    isGround = true;
+                    isCalculateVerticalSpeed = false;
+                }
+
+                else
+                {
+                    isGround = false;
+                }
                 Vector3 hitPoint = new Vector3(transform.position.x, hit.point.y, transform.position.z);
                 GroundPoint = hit.point;
                 float distance = (transform.position - hit.point).magnitude;
@@ -63,7 +77,7 @@ public class GroundChecker : MonoBehaviour
                 if(currentTime >= groundWaitTime)
                 {
                     isGround = false;
-                    Normal = Vector3.zero;
+                    Normal = Vector3.up;
                     GroundOffset = Vector3.zero;
                     GroundPoint = Vector3.zero;
                     currentTime = 0f;

@@ -5,6 +5,7 @@ public class PatrolEnemyBase : EnemyBase
     [Header("アイドルステートに関する設定")]
     [Tooltip("どれだけの時間立ち止まるか"), SerializeField] private float idleTime = 1f;
     [Header("パトロールステートに関する設定, 値")]
+    [Tooltip("パトロール中の移動スピード"), SerializeField] private float patrolSpeed = 3.3f;
     [Tooltip("パトロールする範囲となる円の半径"), SerializeField] private float patrolRadius = 2f;
     [Tooltip("この回数パトロールしたら次にパトロールステートに入った時に中央に戻る"), SerializeField] private int patrolNumBackToCenter = 10;
 
@@ -14,26 +15,32 @@ public class PatrolEnemyBase : EnemyBase
     public int PatrolNumBackToCenter { get => patrolNumBackToCenter; }
     public Vector3 PatrolCenter { get => patrolCenter;}
     public float IdleTime { get => idleTime; }
+    public float PatrolSpeed { get => patrolSpeed;}
 
     protected override void Awake()
     {
         base.Awake();
 
         patrolCenter = transform.position;
+        defaultPosition = patrolCenter;
         stateMachine.AddState(EnemyState.Idle, new EnemyIdleState());
         stateMachine.AddState(EnemyState.Patrol, new EnemyPatrolState());
         stateMachine.ChangeState(this, EnemyState.Idle);
     }
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        patrolCenter = transform.position;
-    }
-#endif
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(patrolCenter, patrolRadius);
+        Vector3 center;
+        if (!Application.isPlaying)
+        {
+            center = transform.position;
+        }
+
+        else
+        {
+            center = patrolCenter;
+        }
+            Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(center, patrolRadius);
     }
 }

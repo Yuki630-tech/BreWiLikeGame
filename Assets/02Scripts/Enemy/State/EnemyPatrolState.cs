@@ -13,6 +13,7 @@ public class EnemyPatrolState : IState<EnemyBase>
 
         owner.Animator.SetBool(AnimationParametaName.Move, true);
         owner.NavmeshAgent.isStopped = false;
+        owner.NavmeshAgent.speed = patrol.PatrolSpeed;
        
         if (NavMeshUtility.TryGetCirclePosOnNavMesh(patrol.PatrolCenter, patrol.PatrolRadius, out destination) && patrolNum <= patrol.PatrolNumBackToCenter)
         {
@@ -34,6 +35,16 @@ public class EnemyPatrolState : IState<EnemyBase>
         if(distance <= 0.05f)
         {
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Idle);
+        }
+
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Alert)
+        {
+            owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Alert);
+        }
+
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase)
+        {
+            owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Chase);
         }
     }
 
