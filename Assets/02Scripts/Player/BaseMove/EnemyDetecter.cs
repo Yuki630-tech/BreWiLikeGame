@@ -51,7 +51,7 @@ public class EnemyDetecter : MonoBehaviour
         {
             targetEnemy.Value = null;
         }).AddTo(gameObject);
-        enemyCount.Where(x => x > 0 && !enemyList.Contains(targetEnemy.Value) && enemyCount.Value > 1).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
+        enemyCount.Where(x => x > 0 && !enemyList.Contains(targetEnemy.Value)).Subscribe(_ => AddEnemyIndex()).AddTo(gameObject);
     }
 
     private void OnEnable()
