@@ -23165,8 +23165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad164ffa64d31841bdd9e76702095cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertDistance: 20.1
-  chaseDistance: 8.75
+  alertDistance: 19.1
+  chaseDistance: 13.59
   sensorState: 0
   distance: 0
 --- !u!137 &418601427
@@ -52561,8 +52561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad164ffa64d31841bdd9e76702095cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertDistance: 20.1
-  chaseDistance: 8
+  alertDistance: 19.1
+  chaseDistance: 13.59
   sensorState: 0
   distance: 0
 --- !u!1 &528310935
@@ -70359,8 +70359,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad164ffa64d31841bdd9e76702095cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertDistance: 20.1
-  chaseDistance: 8
+  alertDistance: 19.1
+  chaseDistance: 13.59
   sensorState: 0
   distance: 0
 --- !u!1 &1728189419
