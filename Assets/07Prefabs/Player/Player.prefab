@@ -475,8 +475,6 @@ MonoBehaviour:
     isTurnToCamera: 1
     transform: {fileID: 7918473594262419203}
   jumpPower: 10
-  walkAnimSpeed: 2
-  dashAnimSpeed: 4
   strafeMoveVectorMaker:
     playerCamera: {fileID: 0}
     moveSpeed: 2
@@ -489,6 +487,7 @@ MonoBehaviour:
   canAttackFlag: 1
   weaponContainer: {fileID: 5883458571336490141}
   verticalMoveMaker:
+    playerTrans: {fileID: 7918473594262419203}
     gravity: 40
     maxFallSpeed: 100
     groundChecker: {fileID: 3799094969259214634}
@@ -512,14 +511,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingPoint: {x: 0, y: 0.66, z: 0}
-  radius: 0.18
+  radius: 0.185
   length: 0.59
   layerMask:
     serializedVersion: 2
     m_Bits: 64
   groundWaitTime: 0
+  groundSlopeLimit: 60
   isGround: 0
   isCalculateVerticalSpeed: 0
+  difference: 0
 --- !u!143 &4870706454005089567
 CharacterController:
   m_ObjectHideFlags: 0

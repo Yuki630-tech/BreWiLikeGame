@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyPatrolState : IState<EnemyBase>
+public class PatrolEnemyPatrolState : IState<EnemyBase>
 {
     private int patrolNum = 0;
     private Vector3 destination;

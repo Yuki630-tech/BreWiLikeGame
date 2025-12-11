@@ -3,6 +3,7 @@ public class EnemyBackState : IState<EnemyBase>
 {
     public void Enter(EnemyBase owner)
     {
+        owner.Animator.SetBool(AnimationParametaName.Run, true);
         owner.NavmeshAgent.SetDestination(owner.DefaultPosition);
     }
 
@@ -18,7 +19,7 @@ public class EnemyBackState : IState<EnemyBase>
 
     public void Exit(EnemyBase owner)
     {
-
+        owner.Animator.SetBool(AnimationParametaName.Run, false);
     }
 
 }

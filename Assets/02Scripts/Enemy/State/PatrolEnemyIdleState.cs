@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyIdleState : IState<EnemyBase>
+public class PatrolEnemyIdleState : IState<EnemyBase>
 {
     private float currentTime = 0f;
     private PatrolEnemyBase patrol;

@@ -8,16 +8,21 @@ public class TargetSensor : MonoBehaviour
     [Header("プレイヤーを見つけたモードに使うセンサーの範囲(赤)")]
     [Tooltip("プレイヤーを見つける距離"), SerializeField] private float chaseDistance = 5f;
 
+    [Header("プレイヤーと対峙する距離(緑)"), SerializeField] private float strafeDistance = 3f;
+
     [Header("現在のセンサーのステート"), ReadOnly, SerializeField] private SensorState sensorState;
     [Header("プレイヤーとの距離"), ReadOnly, SerializeField] private float distance;
 
     public SensorState State { get => sensorState; }
+    public float AlertDistance { get => alertDistance; }
+    public float ChaseDistance { get => chaseDistance; }
 
     public enum SensorState
     {
         None,
         Alert,
-        Chase
+        Chase,
+        Strafe
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,9 +44,14 @@ public class TargetSensor : MonoBehaviour
             sensorState = SensorState.Alert;
         }
 
-        else if(distance < chaseDistance)
+        else if(distance <= chaseDistance && distance > strafeDistance)
         {
             sensorState = SensorState.Chase;
+        }
+
+        else if(distance <= strafeDistance)
+        {
+            sensorState = SensorState.Strafe;
         }
 
         else
@@ -57,5 +67,8 @@ public class TargetSensor : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, chaseDistance);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere (transform.position, strafeDistance);
     }
 }

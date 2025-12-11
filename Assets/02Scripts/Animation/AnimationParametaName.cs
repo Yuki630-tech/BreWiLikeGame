@@ -19,5 +19,9 @@ public static class AnimationParametaName
     public static string ShieldMoveX { get; private set; } = "ShieldMoveX";
     public static string ShieldMoveZ { get; private set; } = "ShieldMoveZ";
     public static string Jump { get; private set; } = "Jump";
+    public static string Run { get; private set; } = "Run";
+    public static string Alert { get; private set; } = "Alert";
+    public static string CloseAttack { get; private set; } = "CloseAttack";
+    public static string Strafe { get; private set; } = "Strafe";
 
 }

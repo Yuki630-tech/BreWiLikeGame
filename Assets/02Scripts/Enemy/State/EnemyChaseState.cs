@@ -3,10 +3,11 @@ using UnityEngine;
 public class EnemyChaseState : IState<EnemyBase>
 {
     
-    public void Enter(EnemyBase owner)
+    public async void Enter(EnemyBase owner)
     {
+        
         owner.NavmeshAgent.isStopped = false;
-        owner.Animator.SetBool(AnimationParametaName.Move, true);
+        owner.Animator.SetBool(AnimationParametaName.Run, true);
         owner.NavmeshAgent.speed = owner.ChaseSpeed;
     }
 
@@ -18,11 +19,16 @@ public class EnemyChaseState : IState<EnemyBase>
         {
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Back);
         }
+
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Strafe)
+        {
+            owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Strafe);
+        }
     }
 
     public void Exit(EnemyBase owner)
     {
-
+        owner.Animator.SetBool(AnimationParametaName.Run, false);
     }
 
 }
