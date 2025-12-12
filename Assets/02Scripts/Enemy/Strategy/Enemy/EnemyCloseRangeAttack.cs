@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyCloseRangeAttack : IStrategyWithCondition
 {
+    
     public bool CanStartStrategy(EnemyBase owner)
     {
         SwordGoblinEnemy goblin = owner as SwordGoblinEnemy;
@@ -23,5 +24,8 @@ public class EnemyCloseRangeAttack : IStrategyWithCondition
         owner.Animator.ResetTrigger(AnimationParametaName.CloseAttack);
     }
 
-    
+    public string GetName()
+    {
+        return "ãﬂê⁄çUåÇ";
+    }
 }

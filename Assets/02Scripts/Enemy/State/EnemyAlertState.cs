@@ -15,6 +15,7 @@ public class EnemyAlertState : IState<EnemyBase>
     {
         distance = Vector3.Distance(owner.transform.position, ComponentProvider.Instance.PlayerTrans.position);
         Vector3 direction = (ComponentProvider.Instance.PlayerTrans.position - owner.transform.position).normalized;
+        owner.SetNormalizedProximity(distance);
         owner.transform.rotation = Quaternion.LookRotation(direction);
 
         if(owner.TargetSensor.State == TargetSensor.SensorState.None)
@@ -25,19 +26,18 @@ public class EnemyAlertState : IState<EnemyBase>
         if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart)
         {
             isChaseStart = true;
+            
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Chase);
             return;
         }
 
-        else
-        {
-            owner.SetNormalizedProximity(distance);
-        }
+
     }
 
     public void Exit(EnemyBase owner)
     {
+        owner.SetNormalizedProximityToEndValue();
     }
 
 }

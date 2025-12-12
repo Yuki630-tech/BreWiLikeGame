@@ -6,9 +6,12 @@ public class GoblinStrafeState : IState<EnemyBase>
     public void Enter(EnemyBase owner)
     {
         owner.NavmeshAgent.updateRotation = false;
-        owner.Animator.SetBool(AnimationParametaName.Strafe, true);
+        owner.NavmeshAgent.isStopped = false;
+        owner.Animator.SetBool(AnimationParametaName.Move, true);
         owner.EnemyAttackStrategyFactory.CreateStrategy();
         swordGogline = owner as SwordGoblinEnemy;
+        owner.NavmeshAgent.speed = swordGogline.StrafeSpeed;
+
     }
 
     public void Update(EnemyBase owner, float deltaTime)
@@ -24,13 +27,17 @@ public class GoblinStrafeState : IState<EnemyBase>
 
         if (owner.EnemyAttackStrategyFactory.GetStrategy().CanStartStrategy(owner))
         {
+            Debug.Log("çUåÇâ¬î\");
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Attack);
         }
     }
 
     public void Exit(EnemyBase owner)
     {
-        owner.Animator.SetBool(AnimationParametaName.Strafe, false);
+        owner.Animator.SetBool(AnimationParametaName.Move, false);
+        owner.NavmeshAgent.updateRotation = true;
+        owner.NavmeshAgent.isStopped = true;
+
     }
 
 }

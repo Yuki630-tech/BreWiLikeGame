@@ -8,15 +8,21 @@ public class AttackReceiverDetecter : MonoBehaviour
     public IJustAvoidable JustAvoidable { get => justAvoidable; }
     public IJustGurdable JustGurdable { get => justGurdable; }
 
+    private void Update()
+    {
+        Debug.Log("JustAvoidable : " + justAvoidable != null);
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if(justAvoidable != null)
+        if(other.GetComponent<IJustAvoidable>() != null)
         {
+            Debug.Log("ジャスト回避する奴が入ってきた");
             justAvoidable = other.GetComponent<IJustAvoidable>();
         }
 
-        if(justGurdable != null)
+        if(other.GetComponent<IJustGurdable>() != null)
         {
+            Debug.Log("ジャストガードする奴が入ってきた");
             justGurdable = other.GetComponent<IJustGurdable>();
         }
     }

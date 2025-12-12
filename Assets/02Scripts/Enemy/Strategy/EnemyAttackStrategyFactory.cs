@@ -13,6 +13,7 @@ public class EnemyAttackStrategyFactory : IRandomStrategyFactory
     public void CreateStrategy()
     {
         currentStrategy = attackStrategyList[Random.Range(0, attackStrategyList.Count)];
+        Debug.Log(currentStrategy.GetName());
     }
 
     public IStrategyWithCondition GetStrategy()

@@ -11,7 +11,7 @@ public class AlertUI : MonoBehaviour
     private void Awake()
     {
         enemyBase.NormalizedProximityProperty.Where(x => x != -1).Subscribe(x => PaintAlertImage(x)).AddTo(gameObject);
-        enemyBase.NormalizedProximityProperty.Where(x => x == 1).Subscribe(_ => HideAlertImage()).AddTo(gameObject);
+        enemyBase.NormalizedProximityProperty.Where(x => x >= 1 || x == -1).Subscribe(_ => HideAlertImage()).AddTo(gameObject);
         alertUI.SetActive(false);
     }
 

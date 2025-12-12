@@ -9,6 +9,11 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
         player = animator.GetComponent<Player>();
         player.IsCanChangeState = false;
         player.SetIfMovable(false);
+        if (player.IsJustAvoidable)
+        {
+            Time.timeScale = 0.5f;
+        }
+
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -16,5 +21,6 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
         player.IsCanChangeState = true;
         player.SetIfMovable(true);
         animator.ResetTrigger(AnimationParametaName.Jump);
+        Time.timeScale = 1f;
     }
 }
