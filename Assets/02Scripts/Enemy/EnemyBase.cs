@@ -22,8 +22,6 @@ public class EnemyBase : MonoBehaviour
     [Tooltip("発見UIを表示させる時間"), SerializeField] private float showUITime = 0.8f;
     [Tooltip("拠点に戻る距離"), SerializeField] private float distanceBackToDefaultPosition = 10f;
 
-   
-
     [Header("敵のスタート地点"), ReadOnly, SerializeField] protected Vector3 defaultPosition;
     [Header("Alertステートに関する設定")]
     [Header("警戒に入る最大距離に対してどれだけ近づいているか"), ReadOnly, SerializeField]

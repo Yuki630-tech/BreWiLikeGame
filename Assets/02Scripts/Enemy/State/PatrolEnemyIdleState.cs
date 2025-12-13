@@ -15,7 +15,7 @@ public class PatrolEnemyIdleState : IState<EnemyBase>
     public void Update(EnemyBase owner, float deltaTime)
     {
         currentTime += deltaTime;
-        Debug.Log(owner.gameObject.name + "Idle’†‚ÌcurrentTime : " + currentTime);
+        //Debug.Log(owner.gameObject.name + "Idle’†‚ÌcurrentTime : " + currentTime);
 
         if(currentTime >= patrol.IdleTime && owner.TargetSensor.State == TargetSensor.SensorState.None)
         {
