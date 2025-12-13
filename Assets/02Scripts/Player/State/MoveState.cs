@@ -15,6 +15,7 @@ public class MoveState : IState<Player>
         if (owner.IsMovable)
         {
             owner.NormalMoveCharConMove.Update(deltaTime);
+            owner.SetPlayerSpeed(owner.MoveVectorMaker.Speed);
         }
         if (InputManager.Instance.IsSheildInput)
         {

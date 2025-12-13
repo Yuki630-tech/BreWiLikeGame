@@ -1,4 +1,5 @@
 using System;
+using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,10 +15,17 @@ public class MoveVectorMaker
     [Tooltip("入力の方向を向くかどうか"), SerializeField] private bool isTurnToInput;
     [Tooltip("カメラの方向を向くかどうか"), SerializeField] private bool isTurnToCamera;
 
+    [Header("プレイヤーの今の速度"), ReadOnly, SerializeField] private float speed;
+
     [Tooltip("自分のTransform"), SerializeField] Transform transform;
 
     public Vector3 InputVector { get; private set; }
     public Vector3 MoveVector {  get; private set; }
+
+
+    public float Speed { get => speed; }
+    public float MoveSpeed { get => moveSpeed; }
+    public float DashPower { get => dashPower; }
 
     public void MakeMoveVector()
     {
@@ -32,6 +40,15 @@ public class MoveVectorMaker
         }
 
         MoveVector = InputManager.Instance.IsDashInput ? dashPower * moveSpeed * InputVector : moveSpeed * InputVector;
+        if(InputVector.magnitude > 0f)
+        {
+            speed = InputManager.Instance.IsDashInput ? dashPower * moveSpeed : moveSpeed;
+        }
+
+        else
+        {
+            speed = 0f;
+        }
     }
 
     public void SetIfTurnToCamera(bool value)

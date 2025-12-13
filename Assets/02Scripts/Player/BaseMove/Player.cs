@@ -47,6 +47,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     [Header("ジャストガードできるか"), ReadOnly, SerializeField] private bool isJustGurdable;
 
+    [Header("プレイヤーの今の速度"), ReadOnly, SerializeField] private ReactiveProperty<float> playerSpeedProperty = new();
+
     public bool IsCanChangeState = true;
 
     //[Tooltip("攻撃中のWallChecker"), SerializeField] private WallChecker wallChecker;
@@ -56,6 +58,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     private bool isDie;
 
     private StateMachine<PlayerState, Player> stateMachine = new StateMachine<PlayerState, Player>();
+
+    public IReadOnlyReactiveProperty<float> PlayerSpeedProperty => playerSpeedProperty;
 
    
     #region Property
@@ -82,6 +86,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     //public float DashAnimSpeed { get => dashAnimSpeed; }
     public bool IsJustAvoidable { get => isJustAvoidable; }
     public bool IsJustGurdable { get => isJustGurdable; }
+
+    public float NoticedByEnemySpeed { get; private set; }
     
     #endregion
     public enum PlayerState
@@ -94,7 +100,9 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     private void Awake()
     {
+        NoticedByEnemySpeed = moveVectorMaker.MoveSpeed;
         ComponentProvider.Instance.SetPlayerTrans(transform);
+        ComponentProvider.Instance.SetPlayer(this);
         //playerAnimator.enabled = false;
         isMovable = true;
 
@@ -147,5 +155,10 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     public void SetIfJustGurdable(bool value)
     {
         isJustAvoidable = value;
+    }
+
+    public void SetPlayerSpeed(float value)
+    {
+        playerSpeedProperty.Value = value;
     }
 }

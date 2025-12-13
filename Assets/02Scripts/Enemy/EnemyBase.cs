@@ -8,6 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(TargetSensor))]
 public class EnemyBase : MonoBehaviour
 {
+    [ReadOnly, SerializeField] private EnemyState currentState;
     protected StateMachine<EnemyState, EnemyBase> stateMachine = new();
     protected EnemyAttackStrategyFactory enemyAttackStrategyFactory = new();
 
@@ -27,9 +28,15 @@ public class EnemyBase : MonoBehaviour
     [Header("Œx‰ú‚É“ü‚éÅ‘å‹——£‚É‘Î‚µ‚Ä‚Ç‚ê‚¾‚¯‹ß‚Ã‚¢‚Ä‚¢‚é‚©"), ReadOnly, SerializeField]
     private ReactiveProperty<float> normalizedProximityProperty = new();
 
+    [Header("ƒvƒŒƒCƒ„[‚Æ‚ÌŠÔ‚Ì‹——£"), ReadOnly, SerializeField]
+    private ReactiveProperty<float> distanceProperty = new();
+
+    [ReadOnly] public bool IsMoveByTargetSensor;
+
     private CancellationTokenSource cts;
 
     public IReadOnlyReactiveProperty<float> NormalizedProximityProperty => normalizedProximityProperty;
+    public IReadOnlyReactiveProperty<float> DistanceProperty => distanceProperty;
 
     public NavMeshAgent NavmeshAgent { get => navmeshAgent; }
     public Animator Animator { get => animator; }
@@ -60,8 +67,9 @@ public class EnemyBase : MonoBehaviour
         stateMachine.AddState(EnemyState.Attack, new EnemyAttackState());
         stateMachine.AddState(EnemyState.Back, new EnemyBackState());
 
-    }
+        IsMoveByTargetSensor = true;
 
+    }
     private void OnEnable()
     {
         cts = new CancellationTokenSource();    
@@ -75,6 +83,10 @@ public class EnemyBase : MonoBehaviour
     private void Update()
     {
         stateMachine.Update(Time.deltaTime, this);
+
+        distanceProperty.Value = Vector3.Distance(transform.position, ComponentProvider.Instance.PlayerTrans.position);
+
+        currentState = stateMachine.TypeId;
     }
 
     public void SetNormalizedProximity(float distance)
