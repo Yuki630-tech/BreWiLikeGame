@@ -56,6 +56,7 @@ public class EnemyAlertState : IState<EnemyBase>
         if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart)
         {
             isChaseStart = true;
+            //owner.SetNormalizedProximityToEndValue();
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Chase);
         }

@@ -11,7 +11,7 @@ public class EnemyBackState : IState<EnemyBase>
     {
         float distance = Vector3.Distance(owner.transform.position, owner.DefaultPosition);
 
-        if(distance <= 0.1f)
+        if(distance <= 0.5f)
         {
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Idle);
         }
