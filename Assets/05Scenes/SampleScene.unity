@@ -119,6 +119,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &8330183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8330184}
+  m_Layer: 0
+  m_Name: OpeningSignalReceiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8330184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8330183}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1686427353}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &39871414
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,7 +1769,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.3726415, g: 1, b: 0.94311583, a: 1}
   m_Intensity: 1000.2
-  m_Range: 28.49
+  m_Range: 100.98
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -1776,7 +1807,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1799,8 +1830,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845897503}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15212338, y: -3.2153574e-10, z: 4.948908e-11, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: -1.3999996, z: -2.7599988}
+  m_LocalRotation: {x: -0.30070576, y: -6.355871e-10, z: 9.782618e-11, w: 0.95371693}
+  m_LocalPosition: {x: -0.61, y: 7.57, z: -0.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2706,6 +2737,7 @@ Transform:
   m_Children:
   - {fileID: 788150206}
   - {fileID: 857428197}
+  - {fileID: 8330184}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1780172610
@@ -3159,6 +3191,10 @@ PrefabInstance:
     - target: {fileID: 1998018399593177480, guid: 1b8cc9be318494c4dadb1b8ff4870f46, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1998018399593177480, guid: 1b8cc9be318494c4dadb1b8ff4870f46, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2554631317803196068, guid: 1b8cc9be318494c4dadb1b8ff4870f46, type: 3}
       propertyPath: playerCamera

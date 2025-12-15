@@ -46,7 +46,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 23.083334
+        time: 22
         value: 0
         inSlope: 0
         outSlope: 0
@@ -85,7 +85,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 23.083334
+    m_StopTime: 22
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -115,7 +115,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 23.083334
+        time: 22
         value: 0
         inSlope: 0
         outSlope: 0
@@ -182,7 +182,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 16.133333
+        time: 15.916667
         value: 0
         inSlope: 0
         outSlope: 0
@@ -230,7 +230,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 16.133333
+    m_StopTime: 15.916667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -323,7 +323,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 16.133333
+        time: 15.916667
         value: 0
         inSlope: 0
         outSlope: 0
@@ -368,13 +368,13 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: -6165862894635949409}
-    m_Duration: 19.516666666666666
+    m_Duration: 32.75
     m_TimeScale: 1
     m_ParentTrack: {fileID: -309602403531036946}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 6.149999999999999
+    m_BlendOutDuration: 15.8
     m_MixInCurve:
       serializedVersion: 2
       m_Curve: []
@@ -416,15 +416,15 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: VolumePlayableAsset
   - m_Version: 1
-    m_Start: 13.366666666666667
+    m_Start: 16.95
     m_ClipIn: 0
     m_Asset: {fileID: 4869377121832263495}
-    m_Duration: 15.066666666666666
+    m_Duration: 43.13333333333334
     m_TimeScale: 1
     m_ParentTrack: {fileID: -309602403531036946}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 6.149999999999999
+    m_BlendInDuration: 15.8
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
