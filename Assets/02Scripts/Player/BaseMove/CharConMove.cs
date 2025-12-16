@@ -11,6 +11,7 @@ public class CharConMove
     private Vector3 verticalVector;
     private float jumpPower;
     private Vector3 move;
+    private bool isMovable;
 
     public CharConMove(Transform setTrans, CharacterController setCharacterController, MoveVectorMaker setMoveVectorMaker,  VerticalMoveMaker setVerticalMoveMaker, GroundChecker setGroundChecker, float setJumpPower)
     {
@@ -31,6 +32,11 @@ public class CharConMove
         characterController.Move(move * deltaTime);
     }
 
+    public void SetIfMovable(bool value)
+    {
+        isMovable = value;
+    }
+
     private void MakeVector(float deltaTime)
     {
         //if (verticalMoveMaker.VerticalSpeed <= 0f)
@@ -45,10 +51,13 @@ public class CharConMove
         //}
 
         isGround = groundChecker.IsGround;
-        moveVectorMaker.MakeMoveVector();
+        if (isMovable)
+        {
+            moveVectorMaker.MakeMoveVector();
+        }
         verticalMoveMaker.Update(deltaTime);
         verticalVector = verticalMoveMaker.FallVector;
-        move = moveVectorMaker.MoveVector;
+        move = isMovable ? moveVectorMaker.MoveVector : Vector3.zero;
 
         float diff = Vector3.Angle(playerTrans.up, groundChecker.Normal);
         Debug.Log("プレイヤーと地面の垂線との角度 : " + diff);

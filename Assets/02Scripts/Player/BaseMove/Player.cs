@@ -145,6 +145,7 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     public void SetIfMovable(bool setMovable)
     {
         isMovable = setMovable;
+        normalMoveCharConMove.SetIfMovable(setMovable);
     }
 
     public void SetIfJustAvoidable(bool value)

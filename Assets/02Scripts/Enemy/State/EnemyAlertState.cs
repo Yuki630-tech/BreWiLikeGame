@@ -53,7 +53,7 @@ public class EnemyAlertState : IState<EnemyBase>
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Idle);
         }
 
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart)
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart && ComponentProvider.Instance.CanPlayerBeNoticed())
         {
             isChaseStart = true;
             //owner.SetNormalizedProximityToEndValue();

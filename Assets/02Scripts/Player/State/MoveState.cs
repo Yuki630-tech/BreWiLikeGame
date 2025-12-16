@@ -12,12 +12,9 @@ public class MoveState : IState<Player>
 
     public void Update(Player owner, float deltaTime)
     {
-        if (owner.IsMovable)
-        {
-            owner.NormalMoveCharConMove.Update(deltaTime);
-            owner.SetPlayerSpeed(owner.MoveVectorMaker.Speed);
-        }
-        if (InputManager.Instance.IsSheildInput)
+        owner.NormalMoveCharConMove.Update(deltaTime);
+        owner.SetPlayerSpeed(owner.MoveVectorMaker.Speed);
+        if (InputManager.Instance.IsSheildInput && owner.IsMovable)
         {
             owner.StateMachine.ChangeState(owner, Player.PlayerState.Strafe);
         }
@@ -30,7 +27,7 @@ public class MoveState : IState<Player>
         }
         isGround = owner.NormalMoveCharConMove.IsGround;
         //Debug.Log("CanAttack:" + canAttack);
-        if (InputManager.Instance.IsAttackInput && isGround)
+        if (InputManager.Instance.IsAttackInput && isGround && owner.IsMovable)
         {
             owner.StateMachine.ChangeState(owner, Player.PlayerState.Attack);
         }
@@ -54,8 +51,8 @@ public class MoveState : IState<Player>
         owner.Animator.SetFloat(AnimationParametaName.Move, animSpeed, animationDamp, deltaTime);
         owner.Animator.SetFloat(AnimationParametaName.FallSpeed, owner.VerticalMoveMaker.VerticalSpeed, animationDamp, Time.deltaTime);
         owner.Animator.SetBool(AnimationParametaName.IsGround, isGround);
-        float animationSpeedForBlentTree = owner.IsMovable ? 1f : 0f;
-        owner.Animator.SetFloat(AnimationParametaName.AnimationSpeedForBlendTree, animationSpeedForBlentTree);
+        //float animationSpeedForBlentTree = owner.IsMovable ? 1f : 0f;
+        //owner.Animator.SetFloat(AnimationParametaName.AnimationSpeedForBlendTree, animationSpeedForBlentTree);
 
     }
 }
