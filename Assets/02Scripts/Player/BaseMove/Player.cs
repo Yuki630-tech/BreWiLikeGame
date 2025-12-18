@@ -104,10 +104,11 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
         ComponentProvider.Instance.SetPlayerTrans(transform);
         ComponentProvider.Instance.SetPlayer(this);
         //playerAnimator.enabled = false;
-        isMovable = true;
 
         //ステートマシンに移動ステート、攻撃ステートを追加
         normalMoveCharConMove = new CharConMove(transform, characterController, moveVectorMaker, verticalMoveMaker, groundChecker, jumpPower);
+        SetIfMovable(true);
+
         stateMachine.AddState(PlayerState.Normal, new MoveState());
         stateMachine.AddState(PlayerState.Attack, AttackState = new AttackState());
         stateMachine.AddState(PlayerState.Strafe, new StrafeState());

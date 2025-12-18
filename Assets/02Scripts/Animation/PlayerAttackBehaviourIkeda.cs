@@ -4,7 +4,7 @@ namespace Ikeda
 {
     public class PlayerAttackBehaviourIkeda : StateMachineBehaviour
     {
-        [Header("ƒRƒ“ƒ{UŒ‚‰Â”\‚©"), SerializeField] private bool canComboAttack = true;
+        [Header("ƒRƒ“ƒ{UŒ‚‰Â”\‚©"), SerializeField] protected bool canComboAttack = true;
 
         [Header("ŽŸ‚ÌUŒ‚‚Ö‚Ì”h¶‰Â”\ŽžŠÔi0`1‚ÌŠ„‡j")]
         [SerializeField, Range(0, 1)]private float start = 0f;
@@ -17,7 +17,7 @@ namespace Ikeda
         private AttackState attackState;
 
         private bool inputAttack = false;   //UŒ‚“ü—Íƒtƒ‰ƒO
-        private bool nextAttack = false;    //ŽŸ‚ÌUŒ‚‚ðs‚¤ƒtƒ‰ƒO
+        protected bool nextAttack = false;    //ŽŸ‚ÌUŒ‚‚ðs‚¤ƒtƒ‰ƒO
         private bool isRotate = false;      //‰ñ“]ƒtƒ‰ƒO
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -51,6 +51,7 @@ namespace Ikeda
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
+            Debug.Log("UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“’†");
             //UŒ‚•ûŒü
             if (stateInfo.normalizedTime >= rotateTime && isRotate == false)
             {
