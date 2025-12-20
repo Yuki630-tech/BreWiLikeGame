@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AttackReceiverDetecter : MonoBehaviour
+public class AttackReceiverDetector : MonoBehaviour
 {
     private IJustAvoidable justAvoidable;
     private IJustGurdable justGurdable;

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 636656189515668628}
   - component: {fileID: 3386113095097688214}
   - component: {fileID: 5525925539883711294}
-  - component: {fileID: 9017796271877273292}
   - component: {fileID: 2173765852480799606}
+  - component: {fileID: 6852438569754122947}
   m_Layer: 8
   m_Name: AttackReceiverDetecter
   m_TagString: Untagged
@@ -110,18 +110,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9017796271877273292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37936859278878125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cdead4f7301e304eb00f2d170cdb845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &2173765852480799606
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,6 +137,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6852438569754122947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37936859278878125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3d1ec0edbb7e34c94dd986e3fd89b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &66083195324603379
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 307c7b84a1ca45f4381f84129fff94eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   navmeshAgent: {fileID: 7214172007337034205}
   animator: {fileID: 8904452389146833847}
   targetSensor: {fileID: 1182845720818497219}
@@ -436,12 +437,15 @@ MonoBehaviour:
   defaultPosition: {x: 0, y: 0, z: 0}
   normalizedProximityProperty:
     value: 0
+  distanceProperty:
+    value: 0
+  IsMoveByTargetSensor: 0
   idleTime: 1
   patrolSpeed: 3.3
   patrolRadius: 10.16
   patrolNumBackToCenter: 10
   patrolCenter: {x: 0, y: 0, z: 0}
-  attackReceiverDetecter: {fileID: 9017796271877273292}
+  attackReceiverDetecter: {fileID: 0}
   rightOffsetFromPlayerToStrafeDes: 0.8
   strafeSpeed: 1.5
 --- !u!1 &1550428227869460445
