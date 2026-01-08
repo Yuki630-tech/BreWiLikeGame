@@ -42,6 +42,7 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
         player.IsCanChangeState = true;
         player.SetIfMovable(true);
         animator.ResetTrigger(AnimationParametaName.Jump);
+        animator.ResetTrigger(AnimationParametaName.PhysicalAttackTrigger);
         Time.timeScale = 1f;
         
     }
