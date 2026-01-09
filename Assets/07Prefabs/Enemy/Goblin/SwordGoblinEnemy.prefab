@@ -445,7 +445,7 @@ MonoBehaviour:
   patrolRadius: 10.16
   patrolNumBackToCenter: 10
   patrolCenter: {x: 0, y: 0, z: 0}
-  attackReceiverDetecter: {fileID: 0}
+  attackReceiverDetecter: {fileID: 6852438569754122947}
   rightOffsetFromPlayerToStrafeDes: 0.8
   strafeSpeed: 1.5
 --- !u!1 &1550428227869460445
