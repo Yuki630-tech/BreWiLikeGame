@@ -43,7 +43,9 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     [Header("移動できる状態かどうか"), SerializeField] private bool isMovable;
 
+    [Header("ジャスト回避に関する変数群")]
     [Header("ジャスト回避できるか"), ReadOnly, SerializeField] private bool isJustAvoidable;
+    [Header("ジャストガードした後"), ReadOnly, SerializeField] private Transform counterTrans;
 
     [Header("ジャストガードできるか"), ReadOnly, SerializeField] private bool isJustGurdable;
 
@@ -149,6 +151,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
         normalMoveCharConMove.SetIfMovable(setMovable);
     }
 
+    
+
     public void SetIfJustAvoidable(bool value)
     {
         isJustAvoidable = value;
@@ -162,5 +166,15 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     public void SetPlayerSpeed(float value)
     {
         playerSpeedProperty.Value = value;
+    }
+
+    public Transform GetCounterTrans()
+    {
+        return counterTrans;
+    }
+
+    public void SetCounterTrans(Transform setCounterTrans)
+    {
+        counterTrans = setCounterTrans;
     }
 }

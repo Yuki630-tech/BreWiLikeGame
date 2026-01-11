@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AttackReceiverDetector : MonoBehaviour
 {
+    [SerializeField] private Transform ownerTrans;
     private IJustAvoidable justAvoidable;
     private IJustGurdable justGurdable;
 
@@ -10,7 +11,7 @@ public class AttackReceiverDetector : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("JustAvoidable : " + justAvoidable != null);
+        Debug.Log($"JustAvoidable : {justAvoidable != null}");
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -18,6 +19,7 @@ public class AttackReceiverDetector : MonoBehaviour
         {
             Debug.Log("ƒWƒƒƒXƒg‰ñ”ð‚·‚é“z‚ª“ü‚Á‚Ä‚«‚½");
             justAvoidable = other.GetComponent<IJustAvoidable>();
+            justAvoidable.SetCounterTrans(transform);
         }
 
         if(other.GetComponent<IJustGurdable>() != null)
