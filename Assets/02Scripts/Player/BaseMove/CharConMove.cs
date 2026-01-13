@@ -60,10 +60,10 @@ public class CharConMove
         move = isMovable ? moveVectorMaker.MoveVector : Vector3.zero;
 
         float diff = Vector3.Angle(playerTrans.up, groundChecker.Normal);
-        Debug.Log("ƒvƒŒƒCƒ„[‚Æ’n–Ê‚Ì‚ü‚Æ‚ÌŠp“x : " + diff);
+        //Debug.Log("ƒvƒŒƒCƒ„[‚Æ’n–Ê‚Ì‚ü‚Æ‚ÌŠp“x : " + diff);
         if (diff > groundChecker.GroundSlopeLimit && verticalVector.y < 0)
         {
-            Debug.Log("ŠŠ‚è—Ž‚¿‚éŠp“x‚Å‚·");
+            //Debug.Log("ŠŠ‚è—Ž‚¿‚éŠp“x‚Å‚·");
             //â‚ÉŒü‚©‚Á‚ÄˆÚ“®‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚é‚©”»’è(0–¢–ž¨â“¹‚Ì‚ü‚Æ‚Í‹tŒü‚«‚È‚çâ“¹‚ð“o‚ë‚¤‚Æ‚µ‚Ä‚¢‚é
             float upDot = Vector3.Dot(move, groundChecker.Normal);
 

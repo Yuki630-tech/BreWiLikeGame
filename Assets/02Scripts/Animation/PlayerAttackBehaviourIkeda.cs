@@ -75,6 +75,7 @@ namespace Ikeda
                 {
                     if (inputAttack == true && nextAttack == false)
                     {
+                        Debug.Log("Ÿ‚ÌUŒ‚‚ÖˆÚs");
                         attackState.StartComboAttack(player);
                         nextAttack = true;
                     }

@@ -23,7 +23,7 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     [Header("Strafeに関する設定")]
     [Tooltip("Strafe時の移動ベクトル作成クラス"), SerializeField] private MoveVectorMaker strafeMoveVectorMaker = new MoveVectorMaker();
-    [Tooltip("ロックオン対象となる敵を検知するコンポーネント"), SerializeField] private EnemyDetecter enemyDetecter;
+    [Tooltip("ロックオン対象となる敵を検知するコンポーネント"), SerializeField] private EnemyDetecterForLockOn enemyDetecter;
 
     [Header("攻撃ステートに関する設定")]
     [Tooltip("攻撃可能になるゲームフラグの値"), SerializeField] private int canAttackFlag = 1;
@@ -44,6 +44,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     [Header("移動できる状態かどうか"), SerializeField] private bool isMovable;
 
     [Header("ジャスト回避できるか"), ReadOnly, SerializeField] private bool isJustAvoidable;
+
+    [Header("ジャスト回避後にカウンターする際に向かうTransform"), SerializeField] private Transform counterTargetTrans;
 
     [Header("ジャストガードできるか"), ReadOnly, SerializeField] private bool isJustGurdable;
 
@@ -80,7 +82,7 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     //public PlayerAnimator PlayerAnimator { get => playerAnimator; }
     public int CanAttackFlag { get => canAttackFlag; }
     public MoveVectorMaker StrafeMoveVectorMaker { get => strafeMoveVectorMaker; }
-    public EnemyDetecter EnemyDetecter { get => enemyDetecter;}
+    public EnemyDetecterForLockOn EnemyDetecter { get => enemyDetecter;}
     public PlayerCamera PlayerCamera { get => playerCamera; }
     //public float WalkAnimSpeed { get => walkAnimSpeed; }
     //public float DashAnimSpeed { get => dashAnimSpeed; }
@@ -109,14 +111,18 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
         normalMoveCharConMove = new CharConMove(transform, characterController, moveVectorMaker, verticalMoveMaker, groundChecker, jumpPower);
         SetIfMovable(true);
 
+        //-------ステート追加----------------------------------------------------------------------------
         stateMachine.AddState(PlayerState.Normal, new MoveState());
         stateMachine.AddState(PlayerState.Attack, AttackState = new AttackState());
         stateMachine.AddState(PlayerState.Strafe, new StrafeState());
         stateMachine.AddState(PlayerState.Die, new DieState());
+        //-----------------------------------------------------------------------------------------------
 
+        //-------攻撃手法追加----------------------------------------------------------------------------
         weaponAttackStrategyFactory = new WeaponAttackStrategyFactory<Player>();
         weaponAttackStrategyFactory.AddStrategy(Weapon.WeaponType.Physical, new PhysicalAttack());
         weaponAttackStrategyFactory.CreateStrategy(this, Weapon.WeaponType.Physical);
+        //-----------------------------------------------------------------------------------------------
 
         //移動ステートに変更
         stateMachine.ChangeState(this, PlayerState.Normal);
@@ -154,6 +160,24 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
         isJustAvoidable = value;
     }
 
+    /// <summary>
+    /// カウンター攻撃をする際に移動する先のTransformを取得する関数
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetTargetTrans()
+    {
+        return counterTargetTrans;
+    }
+
+    /// <summary>
+    /// カウンター攻撃をする際に移動する先のTransformを設定する関数
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetTargetTrans(Transform value)
+    {
+        counterTargetTrans = value;
+    }
+
     public void SetIfJustGurdable(bool value)
     {
         isJustAvoidable = value;
@@ -163,4 +187,6 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     {
         playerSpeedProperty.Value = value;
     }
+
+    
 }

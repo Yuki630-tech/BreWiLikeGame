@@ -5,7 +5,7 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 
-public class EnemyDetecter : MonoBehaviour
+public class EnemyDetecterForLockOn : MonoBehaviour
 {
     [Tooltip("プレイヤー"), SerializeField] private Transform playerTrans;
     //[Tooltip("敵方向に向いたカメラの水平方向の角度"), SerializeField] private float horizontalAngle = 0;

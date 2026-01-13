@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class ComponentProvider : Singleton<ComponentProvider>
 {
-    [Tooltip("EnemyDetecter"), SerializeField] private EnemyDetecter enemyDetecter;
+    [Tooltip("EnemyDetecter"), SerializeField] private EnemyDetecterForLockOn enemyDetecter;
     [Tooltip("プレイヤーのTransform"), SerializeField] private Transform playerTrans;
     [Header("プレイヤー"), ReadOnly, SerializeField] private Player player;
     
 
-    public EnemyDetecter EnemyDetecter { get => enemyDetecter;}
+    public EnemyDetecterForLockOn EnemyDetecter { get => enemyDetecter;}
     public Transform PlayerTrans { get => playerTrans; }
     public Player Player { get => player; }
 
-    public void SetEnemyDetecter(EnemyDetecter enemyDetecter)
+    public void SetEnemyDetecter(EnemyDetecterForLockOn enemyDetecter)
     {
         this.enemyDetecter = enemyDetecter;
     }

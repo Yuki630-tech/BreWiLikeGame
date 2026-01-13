@@ -6,26 +6,32 @@ using System;
 
 public class EnemyAlertState : IState<EnemyBase>
 {
-    private float distance;
-    private bool isChaseStart;
-    private bool canReduceDistance;
+    private float calmness; //敵の穏やか度・・・プレイヤーとの距離が近いほど低くなる
+    /// <summary>
+    /// 
+    /// </summary>
+    private bool isChaseStart;　
+    private bool canAddCalmness;
     private float reduceInterval = 0.8f;
-    private float reduceSpeed = 2f;
+    private float calmnessAddSpeed = 2f;
     private CancellationTokenSource cts = new();
     private CompositeDisposable disposable;
     public void Enter(EnemyBase owner)
     {
         disposable = new CompositeDisposable();
         isChaseStart = false;
-        canReduceDistance = true;
+        canAddCalmness = true;
         owner.NavmeshAgent.isStopped = true;
+
+        //プレイヤーが一定の速度で動いていた場合はその距離を?ゲージに適用させる(?ゲージを下げていくフラグをオフにする)
         owner.DistanceProperty.Where(_ => ComponentProvider.Instance.Player.PlayerSpeedProperty.Value >= ComponentProvider.Instance.Player.NoticedByEnemySpeed).Subscribe( x =>
         {
-            distance = x;
-            canReduceDistance = false;
+            calmness = x;
+            canAddCalmness = false;
         }).AddTo(disposable);
 
-        owner.DistanceProperty.Delay(TimeSpan.FromSeconds(reduceInterval)).Subscribe(_ => canReduceDistance = true).AddTo(disposable);
+        //プレイヤーが一定時間止まっていたら?ゲージを下げていくフラグを立てる
+        owner.DistanceProperty.Delay(TimeSpan.FromSeconds(reduceInterval)).Subscribe(_ => canAddCalmness = true).AddTo(disposable);
     }
 
     public async void Update(EnemyBase owner, float deltaTime)
@@ -33,11 +39,11 @@ public class EnemyAlertState : IState<EnemyBase>
         Vector3 direction = (ComponentProvider.Instance.PlayerTrans.position - owner.transform.position).normalized;
         if (!isChaseStart)
         {
-            if (canReduceDistance)
+            if (canAddCalmness)
             {
-                distance += reduceSpeed * deltaTime;
+                calmness += calmnessAddSpeed * deltaTime;
             }
-            owner.SetNormalizedProximity(distance);
+            owner.SetNormalizedProximity(calmness);
         }
         owner.transform.rotation = Quaternion.LookRotation(direction);
 
@@ -47,13 +53,17 @@ public class EnemyAlertState : IState<EnemyBase>
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Idle);
         }
 
-        if(distance >= owner.TargetSensor.AlertDistance)
+        //プレイヤーが止まったまま?ゲージが0以下になったら
+        if(calmness >= owner.TargetSensor.AlertDistance)
         {
-            owner.IsMoveByTargetSensor = false;
+            //ターゲットセンサーがアラート状態のままだとAlertステートとIdleステートとの間で無限ループになってしまうので
+            //いったんTargetSensorによるステート操作をオフにした状態でパトロールモードに
+            owner.IsMoveByTargetSensor = false; 
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Idle);
         }
 
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart && ComponentProvider.Instance.CanPlayerBeNoticed())
+        //プレイヤーが一定以上の速度で追跡範囲内に入ってきたら
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !canAddCalmness && !isChaseStart && ComponentProvider.Instance.CanPlayerBeNoticed())
         {
             isChaseStart = true;
             owner.SetNormalizedProximityToEndValue();

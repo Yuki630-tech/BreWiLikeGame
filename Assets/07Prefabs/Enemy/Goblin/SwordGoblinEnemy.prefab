@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 37936859278878125}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.221, y: 8.89, z: 8.502}
+  m_LocalPosition: {x: -0.221, y: 0, z: 8.502}
   m_LocalScale: {x: 6.2243404, y: 14.408345, z: 11.33401}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -109,7 +109,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &2173765852480799606
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -445,7 +445,7 @@ MonoBehaviour:
   patrolRadius: 10.16
   patrolNumBackToCenter: 10
   patrolCenter: {x: 0, y: 0, z: 0}
-  attackReceiverDetecter: {fileID: 0}
+  attackReceiverDetecter: {fileID: 6852438569754122947}
   rightOffsetFromPlayerToStrafeDes: 0.8
   strafeSpeed: 1.5
 --- !u!1 &1550428227869460445

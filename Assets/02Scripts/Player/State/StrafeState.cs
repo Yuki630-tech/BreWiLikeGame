@@ -27,6 +27,16 @@ public class StrafeState : IState<Player>
 
     public void Update(Player owner, float deltaTime)
     {
+        if (InputManager.Instance.IsSheildReleased)
+        {
+            owner.PlayerCamera.SetCamera(true, PlayerCamera.CameraKind.Player);
+            if (owner.EnemyDetecter.TargetEnemy.Value != null)
+            {
+                TargetMarkerSpawner markerSpwner = owner.EnemyDetecter.TargetEnemy.Value.GetComponent<TargetMarkerSpawner>();
+                markerSpwner?.SetTarget(false);
+            }
+        }
+
         if ((InputManager.Instance.IsSheildReleased || !InputManager.Instance.IsShieldPushing) && owner.IsCanChangeState)
         {
             //owner.EnemyDetecter.ChangeEnemy();
@@ -61,12 +71,7 @@ public class StrafeState : IState<Player>
             disposables.Dispose();
 
         }
-        owner.PlayerCamera.SetCamera(true, PlayerCamera.CameraKind.Player);
-        if(owner.EnemyDetecter.TargetEnemy.Value != null)
-        {
-            TargetMarkerSpawner markerSpwner = owner.EnemyDetecter.TargetEnemy.Value.GetComponent<TargetMarkerSpawner>();
-            markerSpwner?.SetTarget(false);
-        }
+        
 
     }
 
