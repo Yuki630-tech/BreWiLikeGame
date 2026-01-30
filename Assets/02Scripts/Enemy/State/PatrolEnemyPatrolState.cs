@@ -52,6 +52,12 @@ public class PatrolEnemyPatrolState : IState<EnemyBase>
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Chase);
         }
+
+        if (owner.TargetSensor.State == TargetSensor.SensorState.Strafe && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        {
+            await owner.ShowChaseUITask();
+            owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Strafe);
+        }
     }
 
     public void Exit(EnemyBase owner)

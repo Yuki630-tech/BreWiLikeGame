@@ -63,7 +63,7 @@ public class EnemyAlertState : IState<EnemyBase>
         }
 
         //プレイヤーが一定以上の速度で追跡範囲内に入ってきたら
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !canAddCalmness && !isChaseStart && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart && ComponentProvider.Instance.CanPlayerBeNoticed())
         {
             isChaseStart = true;
             owner.SetNormalizedProximityToEndValue();

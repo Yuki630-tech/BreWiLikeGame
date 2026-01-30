@@ -61,6 +61,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     private StateMachine<PlayerState, Player> stateMachine = new StateMachine<PlayerState, Player>();
 
+    [SerializeField, ReadOnly] private PlayerState currentState;
+
     public IReadOnlyReactiveProperty<float> PlayerSpeedProperty => playerSpeedProperty;
 
    
@@ -147,6 +149,7 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     void Update()
     {
         stateMachine.Update(Time.deltaTime, this);
+        currentState = stateMachine.TypeId;
     }
 
     public void SetIfMovable(bool setMovable)
