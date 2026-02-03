@@ -30,7 +30,7 @@ public class PatrolEnemyPatrolState : IState<EnemyBase>
             patrolNum = 0;
         }
 
-        ComponentProvider.Instance.Player.PlayerSpeedProperty.Where(x => x >= ComponentProvider.Instance.Player.NoticedByEnemySpeed).Subscribe(_ => owner.IsMoveByTargetSensor = true)
+        ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Where(x => x).Subscribe(_ => owner.IsMoveByTargetSensor = true)
             .AddTo(disposables);
     }
 
@@ -42,18 +42,18 @@ public class PatrolEnemyPatrolState : IState<EnemyBase>
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Idle);
         }
 
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Alert && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Alert && owner.IsMoveByTargetSensor && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Alert);
         }
 
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && owner.IsMoveByTargetSensor && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Chase);
         }
 
-        if (owner.TargetSensor.State == TargetSensor.SensorState.Strafe && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if (owner.TargetSensor.State == TargetSensor.SensorState.Strafe && owner.IsMoveByTargetSensor && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Strafe);

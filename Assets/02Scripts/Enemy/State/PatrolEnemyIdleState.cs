@@ -13,7 +13,7 @@ public class PatrolEnemyIdleState : IState<EnemyBase>
         patrol = owner as PatrolEnemyBase;
         owner.NavmeshAgent.isStopped = true;
         owner.Animator.SetBool(AnimationParametaName.Move, false);
-        ComponentProvider.Instance.Player.PlayerSpeedProperty.Where(x => x >= ComponentProvider.Instance.Player.NoticedByEnemySpeed).Subscribe(_ => owner.IsMoveByTargetSensor = true).AddTo(disposables);
+        ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Where(x => x).Subscribe(_ => owner.IsMoveByTargetSensor = true).AddTo(disposables);
     }
 
     public async void Update(EnemyBase owner, float deltaTime)
@@ -27,18 +27,18 @@ public class PatrolEnemyIdleState : IState<EnemyBase>
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Patrol);
         }
 
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Alert && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Alert && owner.IsMoveByTargetSensor && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Alert);
         }
 
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && owner.IsMoveByTargetSensor && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Chase);
         }
 
-        if (owner.TargetSensor.State == TargetSensor.SensorState.Strafe && owner.IsMoveByTargetSensor && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if (owner.TargetSensor.State == TargetSensor.SensorState.Strafe && owner.IsMoveByTargetSensor && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             await owner.ShowChaseUITask();
             owner.StateMachine.ChangeState(owner, EnemyBase.EnemyState.Strafe);

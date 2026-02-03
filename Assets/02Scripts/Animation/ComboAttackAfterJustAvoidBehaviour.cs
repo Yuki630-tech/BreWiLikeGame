@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class ComboAttackAfterJustAvoidBehaviour : PlayerAttackBehaviourIkeda
 {
+    [SerializeField] private float justAvoidTimescale = 0.25f;
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        Time.timeScale = 0.5f;
+        Time.timeScale = justAvoidTimescale;
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

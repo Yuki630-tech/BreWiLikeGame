@@ -20,7 +20,7 @@ public class MoveState : IState<Player>
     public void Update(Player owner, float deltaTime)
     {
         owner.NormalMoveCharConMove.Update(deltaTime);
-        owner.SetPlayerSpeed(owner.MoveVectorMaker.Speed);
+        owner.SetIfPlayerNoisy(owner.MoveVectorMaker.Speed >= owner.NoticedByEnemySpeed);
         if (InputManager.Instance.IsSheildInput && owner.IsMovable)
         {
             owner.StateMachine.ChangeState(owner, Player.PlayerState.Strafe);

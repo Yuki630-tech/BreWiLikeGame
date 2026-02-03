@@ -4,7 +4,7 @@ using UniRx;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
+public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable,INoiseSource 
 {
 
     [Header("カメラに関する設定")]
@@ -49,8 +49,6 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     [Header("ジャストガードできるか"), ReadOnly, SerializeField] private bool isJustGurdable;
 
-    [Header("プレイヤーの今の速度"), ReadOnly, SerializeField] private ReactiveProperty<float> playerSpeedProperty = new();
-
     public bool IsCanChangeState = true;
 
     //[Tooltip("攻撃中のWallChecker"), SerializeField] private WallChecker wallChecker;
@@ -63,7 +61,7 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
 
     [SerializeField, ReadOnly] private PlayerState currentState;
 
-    public IReadOnlyReactiveProperty<float> PlayerSpeedProperty => playerSpeedProperty;
+    [SerializeField] private ReactiveProperty<bool> isNoisy = new();
 
    
     #region Property
@@ -92,7 +90,9 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
     public bool IsJustGurdable { get => isJustGurdable; }
 
     public float NoticedByEnemySpeed { get; private set; }
-    
+
+    public IReadOnlyReactiveProperty<bool> IsNoisy => isNoisy;
+
     #endregion
     public enum PlayerState
     {
@@ -186,9 +186,9 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable
         isJustAvoidable = value;
     }
 
-    public void SetPlayerSpeed(float value)
+    public void SetIfPlayerNoisy(bool value)
     {
-        playerSpeedProperty.Value = value;
+        isNoisy.Value = value;
     }
 
     

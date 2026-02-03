@@ -5,12 +5,13 @@ public class ComponentProvider : Singleton<ComponentProvider>
 {
     [Tooltip("EnemyDetecter"), SerializeField] private EnemyDetecterForLockOn enemyDetecter;
     [Tooltip("プレイヤーのTransform"), SerializeField] private Transform playerTrans;
-    [Header("プレイヤー"), ReadOnly, SerializeField] private Player player;
+    private INoiseSource noiseSource;
+
     
 
     public EnemyDetecterForLockOn EnemyDetecter { get => enemyDetecter;}
     public Transform PlayerTrans { get => playerTrans; }
-    public Player Player { get => player; }
+    public INoiseSource PlayerNoiseSource { get => noiseSource; }
 
     public void SetEnemyDetecter(EnemyDetecterForLockOn enemyDetecter)
     {
@@ -24,12 +25,7 @@ public class ComponentProvider : Singleton<ComponentProvider>
 
     public void SetPlayer(Player player)
     {
-        this.player = player;
-    }
-
-    public bool CanPlayerBeNoticed()
-    {
-        return player.MoveVectorMaker.Speed >= player.NoticedByEnemySpeed;
+        this.noiseSource = player;
     }
 
 }

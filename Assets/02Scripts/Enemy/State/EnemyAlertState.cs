@@ -24,7 +24,7 @@ public class EnemyAlertState : IState<EnemyBase>
         owner.NavmeshAgent.isStopped = true;
 
         //プレイヤーが一定の速度で動いていた場合はその距離を?ゲージに適用させる(?ゲージを下げていくフラグをオフにする)
-        owner.DistanceProperty.Where(_ => ComponentProvider.Instance.Player.PlayerSpeedProperty.Value >= ComponentProvider.Instance.Player.NoticedByEnemySpeed).Subscribe( x =>
+        owner.DistanceProperty.Where(_ => ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value).Subscribe( x =>
         {
             calmness = x;
             canAddCalmness = false;
@@ -63,7 +63,7 @@ public class EnemyAlertState : IState<EnemyBase>
         }
 
         //プレイヤーが一定以上の速度で追跡範囲内に入ってきたら
-        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart && ComponentProvider.Instance.CanPlayerBeNoticed())
+        if(owner.TargetSensor.State == TargetSensor.SensorState.Chase && !isChaseStart && ComponentProvider.Instance.PlayerNoiseSource.IsNoisy.Value)
         {
             isChaseStart = true;
             owner.SetNormalizedProximityToEndValue();

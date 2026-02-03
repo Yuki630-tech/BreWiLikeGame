@@ -8,6 +8,7 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
 
     [Tooltip("攻撃入力を受け付けるアニメーションの最小進行度"), Range(0, 1), SerializeField] private float attackStart;
     [Tooltip("攻撃入力を受け付けるアニメーションの最大進行度"), Range(0, 1), SerializeField] private float attackEnd;
+    [Tooltip("ジャスト回避時のタイムスケール"), SerializeField] private float justAvoidTimeScale = 0.25f;
 
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -18,7 +19,7 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
         player.SetIfMovable(false);
         if (player.IsJustAvoidable)
         {
-            Time.timeScale = 0.5f;
+            Time.timeScale = justAvoidTimeScale;
             animator.SetBool("JustAvoid", true);
         }
 

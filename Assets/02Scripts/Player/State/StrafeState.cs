@@ -86,7 +86,7 @@ public class StrafeState : IState<Player>
         owner.VerticalMoveMaker.Update(deltaTime);
 
         owner.CharacterController.Move((owner.transform.right * owner.StrafeMoveVectorMaker.MoveVector.x + owner.VerticalMoveMaker.FallVector.y * owner.transform.up + owner.transform.forward * owner.StrafeMoveVectorMaker.MoveVector.z) * deltaTime);
-        owner.SetPlayerSpeed(owner.StrafeMoveVectorMaker.Speed);
+        owner.SetIfPlayerNoisy(owner.StrafeMoveVectorMaker.Speed >= owner.NoticedByEnemySpeed);
     }
 
     private void Animate(Player owner, float deltaTime)
