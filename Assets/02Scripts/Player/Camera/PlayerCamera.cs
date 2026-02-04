@@ -47,6 +47,11 @@ public class PlayerCamera : MonoBehaviour
         ComponentProvider.Instance.EnemyDetecter.TargetEnemy.Where(x => x == null).Subscribe(_ => SetCamera(true, CameraKind.Player)).AddTo(gameObject);
     }
 
+    public void InitializeCurrentCamera()
+    {
+        currentCameraKind = cameraDataList.Find(x => x.CinemachineCamra.Priority == activeCameraPriority).CameraKind;
+    }
+
     private void OnEnable()
     {
         cts = new();
