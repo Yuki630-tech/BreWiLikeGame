@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AttackReceiverDetector : MonoBehaviour
 {
+    [Tooltip("“G‚ÌTransform"), SerializeField] private Transform enemyTrans;
     private IJustAvoidable justAvoidable;
     private IJustGurdable justGurdable;
 
@@ -19,6 +20,7 @@ public class AttackReceiverDetector : MonoBehaviour
             //Debug.Log("ƒWƒƒƒXƒg‰ñ”ð‚·‚é“z‚ª“ü‚Á‚Ä‚«‚½");
             justAvoidable = other.GetComponent<IJustAvoidable>();
             justAvoidable.SetTargetTrans(transform);
+            justAvoidable.SetEnemyTrans(enemyTrans);
         }
 
         if(other.GetComponent<IJustGurdable>() != null)

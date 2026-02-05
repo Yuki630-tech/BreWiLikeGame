@@ -23,5 +23,6 @@ public static class AnimationParametaName
     public static string Alert { get; private set; } = "Alert";
     public static string CloseAttack { get; private set; } = "CloseAttack";
     public static string Strafe { get; private set; } = "Strafe";
+    public static string JustAvoid { get; private set; } = "JustAvoid";
 
 }

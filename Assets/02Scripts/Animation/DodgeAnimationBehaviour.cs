@@ -34,8 +34,9 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
 
         if(isAttack && stateInfo.normalizedTime >= attackStart && stateInfo.normalizedTime <= attackEnd)
         {
-            animator.SetTrigger(AnimationParametaName.PhysicalAttackTrigger);
+            player.StateMachine.ChangeState(player, Player.PlayerState.Attack);
         }
+
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -45,6 +46,9 @@ public class DodgeAnimationBehaviour : StateMachineBehaviour
         animator.ResetTrigger(AnimationParametaName.Jump);
         animator.ResetTrigger(AnimationParametaName.PhysicalAttackTrigger);
         Time.timeScale = 1f;
-        
+        if (!isAttack)
+        {
+            animator.SetBool(AnimationParametaName.JustAvoid, false);
+        }
     }
 }

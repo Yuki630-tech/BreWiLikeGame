@@ -6,4 +6,8 @@ public interface IJustAvoidable
 
     public Transform GetTargetTrans();
     public void SetTargetTrans(Transform value);
+
+    public Transform GetEnemyTrans();
+
+    public void SetEnemyTrans(Transform value);
 }

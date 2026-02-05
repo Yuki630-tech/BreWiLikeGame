@@ -62,12 +62,12 @@ AnimatorStateMachine:
   - {fileID: 5500395824563797070}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -6273810258268814210}
-    second:
-    - {fileID: 2084346477961516255}
   - first: {fileID: 5775669219536186775}
     second:
     - {fileID: 7991014978505238300}
+  - first: {fileID: -6273810258268814210}
+    second:
+    - {fileID: 2084346477961516255}
   - first: {fileID: 7229986257832981101}
     second:
     - {fileID: 1267654590362946357}
@@ -117,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackStart: 0.783
   attackEnd: 0.859
+  justAvoidTimeScale: 0.25
 --- !u!1102 &-8371342968637013100
 AnimatorState:
   serializedVersion: 6
@@ -413,6 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackStart: 0.783
   attackEnd: 0.859
+  justAvoidTimeScale: 0.25
 --- !u!1102 &-6606623451145295998
 AnimatorState:
   serializedVersion: 6
@@ -436,7 +438,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 2f7303b7c9c749149940de6ebea84c5e, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 6ad9f2499ec597346b77ab9345376edb, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -483,9 +485,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canComboAttack: 1
-  start: 0.848
-  end: 0.894
+  start: 0.443
+  end: 0.636
   rotateTime: 0
+  justAvoidTimescale: 0.25
 --- !u!1107 &-6273810258268814210
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1073,9 +1076,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canComboAttack: 1
-  start: 0.714
-  end: 0.837
+  start: 0.441
+  end: 0.643
   rotateTime: 0
+  justAvoidTimescale: 0.25
 --- !u!114 &-741455326507599425
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1089,9 +1093,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canComboAttack: 1
-  start: 0.686
-  end: 0.854
+  start: 0.455
+  end: 0.596
   rotateTime: 0
+  justAvoidTimescale: 0.25
 --- !u!114 &-210160069258758250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1105,9 +1110,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canComboAttack: 0
-  start: 0.836
-  end: 0.967
+  start: 0.526
+  end: 0.73
   rotateTime: 0
+  justAvoidTimescale: 0.25
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -1517,9 +1523,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canComboAttack: 1
-  start: 0.718
-  end: 0.836
+  start: 0.479
+  end: 0.61
   rotateTime: 0
+  justAvoidTimescale: 0.25
 --- !u!114 &2078942318782179367
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1534,6 +1541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackStart: 0.783
   attackEnd: 0.859
+  justAvoidTimeScale: 0.25
 --- !u!1109 &2084346477961516255
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -1934,9 +1942,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canComboAttack: 1
-  start: 0.713
-  end: 0.825
+  start: 0.449
+  end: 0.584
   rotateTime: 0
+  justAvoidTimescale: 0.25
 --- !u!114 &4172218616376419961
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1949,6 +1958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244031fc93cb2d64198f53a1c6bad6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotSpeed: 1080
 --- !u!114 &4240693390042991988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2698,8 +2708,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e1c77d412699e47a491252933d780a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackStart: 0.783
-  attackEnd: 0.859
+  attackStart: 1
+  attackEnd: 1
+  justAvoidTimeScale: 0.25
 --- !u!1109 &7991014978505238300
 AnimatorTransition:
   m_ObjectHideFlags: 1

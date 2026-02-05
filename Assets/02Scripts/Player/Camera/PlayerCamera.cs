@@ -5,6 +5,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using System;
 public class PlayerCamera : MonoBehaviour
 {
     [Tooltip("CinemachineCamraのデータのリスト"), SerializeField] private List<CameraData> cameraDataList = new();
@@ -39,17 +40,18 @@ public class PlayerCamera : MonoBehaviour
         currentCameraKind = cameraDataList.Find(x => x.CinemachineCamra.Priority == activeCameraPriority).CameraKind;
         ComponentProvider.Instance.EnemyDetecter.TargetEnemy.Where(x => x != null && InputManager.Instance.IsShieldPushing).Subscribe(x =>
         {
+            Debug.Log("ターゲットエネミーありのカメラ切り替え");
             SetCamera(false, CameraKind.TargetGroup);
             SetSecondTarget(x.transform);
             _ = LookAt(CameraKind.TargetGroup, playerTrans, x.transform, rotSpeed);
         }).AddTo(gameObject);
 
-        ComponentProvider.Instance.EnemyDetecter.TargetEnemy.Where(x => x == null).Subscribe(_ => SetCamera(true, CameraKind.Player)).AddTo(gameObject);
-    }
+        ComponentProvider.Instance.EnemyDetecter.TargetEnemy.Where(x => x == null).Subscribe(_ =>
+        {
+            Debug.Log("ターゲットエネミーなしのカメラ切り替え");
+            SetCamera(true, CameraKind.Player);
 
-    public void InitializeCurrentCamera()
-    {
-        currentCameraKind = cameraDataList.Find(x => x.CinemachineCamra.Priority == activeCameraPriority).CameraKind;
+        }).AddTo(gameObject);
     }
 
     private void OnEnable()
@@ -64,7 +66,7 @@ public class PlayerCamera : MonoBehaviour
     public void SetCamera(bool isInherited, CameraKind setKind)
     {
         CinemachineCamera cinemachineCamera = cameraDataList.Find(x => x.CameraKind == setKind).CinemachineCamra;
-        Debug.Log(cinemachineCamera.name);
+        Debug.Log("カメラが切り替わりました:" + cinemachineCamera.name);
         CinemachineCamera currentCinemachine = cameraDataList.Find(x => x.CameraKind == currentCameraKind).CinemachineCamra;
 
         CinemachineOrbitalFollow cinemachineOrbitalFollow = cinemachineCamera.GetComponent<CinemachineOrbitalFollow>();
@@ -80,7 +82,10 @@ public class PlayerCamera : MonoBehaviour
             cinemachineOrbitalFollow.VerticalAxis.Value = currentVerticalValue;
         }
         cinemachineCamera.Priority = activeCameraPriority;
-        currentCinemachine.Priority = deActiveCameraPriority;
+        if (cinemachineCamera != currentCinemachine)
+        {
+            currentCinemachine.Priority = deActiveCameraPriority;
+        }
         currentCameraKind = setKind;
 
     }
@@ -109,7 +114,7 @@ public class PlayerCamera : MonoBehaviour
             }
         }
 
-        catch
+        catch (OperationCanceledException)
         {
 
         }
@@ -117,5 +122,5 @@ public class PlayerCamera : MonoBehaviour
 
 
     }
-    
+
 }

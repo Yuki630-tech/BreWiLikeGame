@@ -17,5 +17,7 @@ public class ComboAttackAfterJustAvoidBehaviour : PlayerAttackBehaviourIkeda
         {
             Time.timeScale = 1f;
         }
+
+        animator.SetBool(AnimationParametaName.JustAvoid, false);
     }
 }

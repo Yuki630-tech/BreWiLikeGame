@@ -47,6 +47,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable,INoiseSource
 
     [Header("ジャスト回避後にカウンターする際に向かうTransform"), SerializeField] private Transform counterTargetTrans;
 
+    [Header("ジャスト回避後にカウンターする際にターゲットとなる敵のTransform"), SerializeField] private Transform counterEnemyTrans;
+
     [Header("ジャストガードできるか"), ReadOnly, SerializeField] private bool isJustGurdable;
 
     public bool IsCanChangeState = true;
@@ -92,6 +94,8 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable,INoiseSource
     public float NoticedByEnemySpeed { get; private set; }
 
     public IReadOnlyReactiveProperty<bool> IsNoisy => isNoisy;
+
+    public Transform CounterEnemyTrans { get => counterEnemyTrans; }
 
     #endregion
     public enum PlayerState
@@ -191,5 +195,13 @@ public class Player : MonoBehaviour, IJustAvoidable, IJustGurdable,INoiseSource
         isNoisy.Value = value;
     }
 
-    
+    public Transform GetEnemyTrans()
+    {
+        return counterEnemyTrans;
+    }
+
+    public void SetEnemyTrans(Transform value)
+    {
+        counterEnemyTrans = value;
+    }
 }
