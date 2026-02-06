@@ -24,8 +24,8 @@ public class CounterMoveBehaviour : StateMachineBehaviour
         {
             direction = (targetEnemyTrans.position - animator.transform.position).normalized;
             look = Quaternion.LookRotation(direction);
-            animator.transform.position = Vector3.Lerp(animator.transform.position, targetTrans.position, counterMoveSpeed * Time.deltaTime);
-            animator.transform.rotation = Quaternion.RotateTowards(animator.transform.rotation, look, rotSpeed);
+            animator.transform.position = Vector3.MoveTowards(animator.transform.position, targetTrans.position, counterMoveSpeed * Time.deltaTime);
+            animator.transform.rotation = Quaternion.RotateTowards(animator.transform.rotation, look, rotSpeed * Time.deltaTime);
         }
     }
 

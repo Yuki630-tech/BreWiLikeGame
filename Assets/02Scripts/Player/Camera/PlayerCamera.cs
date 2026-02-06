@@ -108,7 +108,7 @@ public class PlayerCamera : MonoBehaviour
             goalValue = direction.x > 0 ? angle : -angle;
             while (Mathf.Abs(horizontalAxisValue - goalValue) > 5f)
             {
-                horizontalAxisValue = Mathf.Lerp(horizontalAxisValue, goalValue, rotSpeed * Time.deltaTime);
+                horizontalAxisValue = Mathf.MoveTowards(horizontalAxisValue, goalValue, rotSpeed * Time.deltaTime);
                 cinemachineOrbitalFollow.HorizontalAxis.Value = horizontalAxisValue;
                 await UniTask.Yield();
             }

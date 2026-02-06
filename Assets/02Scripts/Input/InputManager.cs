@@ -41,7 +41,7 @@ public class InputManager : Singleton<InputManager>
     protected override void Awake()
     {
         base.Awake();
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
     private void Update()
     {
